@@ -79,9 +79,9 @@ export default {
   left: 50%;
   transform: translate(-50%, -50%);
   padding: 20px;
-  border: 1px solid #e6cc9c;
+  border: 1px solid #f2f2f2;
   border-radius: 7px;
-  background-color: #fdf4e3;
+  background-color: #f2f2f2;
   font-family: Arial, sans-serif;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
@@ -122,17 +122,17 @@ export default {
   font-weight: bold;
   text-align: center;
   text-decoration: none;
-  border: 1px solid #007bff;
+  border: 1px solid #4caf50;
   border-radius: 5px;
   color: #fff;
-  background-color: #007bff;
+  background-color: #4caf50;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
 .btn:hover,
 .btn:focus {
-  background-color: #0062cc;
+  background-color: #4d8f4f;
 }
 
 .btn-primary {

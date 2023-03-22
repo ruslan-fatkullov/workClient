@@ -98,6 +98,10 @@ input[type="submit"] {
   border-radius: 4px;
   cursor: pointer;
 }
+input[type="submit"]:hover {
+  background-color: #4d8f4f;
+}
+
 
 /* стили для заголовка */
 h2 {

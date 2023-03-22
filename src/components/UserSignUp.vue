@@ -102,9 +102,9 @@ export default {
     max-width: 400px;
     margin: 0 auto;
     padding: 20px;
-    border: 1px solid #ccc;
+    border: 1px solid #f2f2f2;
     border-radius: 5px;
-    background-color: #fff;
+    background-color: #f2f2f2;
     font-family: Arial, sans-serif;
 }
 
