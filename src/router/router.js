@@ -23,6 +23,11 @@ const routes = [
     path: '/mainpage',
     name: 'MainPage',
     component: () => import('../components/MainPage.vue')
+  },
+  {
+    path: '/changePassword',
+    name: 'ChangePassword',
+    component: () => import('../components/ChangePass.vue')
   }
 ]
 

@@ -57,8 +57,8 @@ export default {
         if (res.data.statusCode == 200) {
           ResultStringElement.style.color = 'green';
           router.push({ path: '/mainpage' })
-        } else {
-          ResultStringElement.style.color = 'red';
+        } else if(res.data.statusCode == 201){
+          ResultStringElement.style.color = 'green';
         }
 
       }).catch((err) => {
