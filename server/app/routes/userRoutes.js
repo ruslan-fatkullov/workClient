@@ -4,7 +4,11 @@ const router = express.Router()
 
 const SignInController = require("../controller/user.RegisterController.js");
 const LoginController = require("../controller/user.LoginController.js");
+const userController = require("../controller/user.userController.js");
 
+
+// регистрация нового пользователя
+router.get("/getUserByEmail", userController.getUserByEmail);
 
 // регистрация нового пользователя
 router.post("/signUp", SignInController.signUp);

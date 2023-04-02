@@ -1,15 +1,18 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 
-import UserAuthVue from '../components/UserAuth.vue'
-
 const routes = [
-  {
+  /*{
     path: '/',
     name: 'UserAuth',
-    component: UserAuthVue
-  },
+    component: () => import('../components/UserAuth.vue')
+  },*/
   {
+    path: '/login',
+    name: 'UserAuth',
+    component: () => import('../components/userAuth/userAuthWrap.vue')
+  },
+  /*{
     path: '/login',
     name: 'UserSignUp',
     component: () => import('../components/UserSignUp.vue')
@@ -28,7 +31,7 @@ const routes = [
     path: '/changePassword',
     name: 'ChangePassword',
     component: () => import('../components/ChangePass.vue')
-  }
+  }*/
 ]
 
 const router = createRouter({
