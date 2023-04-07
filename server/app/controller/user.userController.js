@@ -4,7 +4,7 @@ const User = db.user;
 exports.getUserByEmail = (req, res) => {
     User.findOne({ where: { email: req.query.email } }).then((result) => {
         if (!(result == null)) {
-            res.json({ user: result})
+            res.json({ firstName: result.firstName, lastName: result.lastName, email: result.email})
         } else {
             res.json({ message: "такого пользователя нет"})
         }

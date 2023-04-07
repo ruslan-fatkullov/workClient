@@ -1,26 +1,17 @@
 <template>
   <form class="change_pass_form" @submit.prevent="changePass()">
     <label for="new_password">Новый пароль:</label>
-    <input
-      v-model="password"
-      type="password"
-      id="new_password"
-      name="new_password"
-      required
-    /><br />
+    <input v-model="password" type="password" id="new_password" name="new_password" required /><br />
 
     <label for="confirm_password">Подтвердите новый пароль:</label>
-    <input
-      v-model="passwordConfirm"
-      type="password"
-      id="confirm_password"
-      name="confirm_password"
-      required
-    /><br />
+    <input v-model="passwordConfirm" type="password" id="confirm_password" name="confirm_password" required /><br />
     <div>
       <p>{{ resultString }}</p>
     </div>
-    <input type="submit" value="Изменить пароль" />
+    <div class="form-group">
+      <input type="submit" value="Изменить пароль" />
+      <input @click="$emit('closeForm')" type="submit" value="Отменить" />
+    </div>
   </form>
 </template>
 
@@ -28,8 +19,10 @@
 import axios from "axios";
 const md5 = require('md5')
 const conf = require("../config");
-import router from '../router/router.js'
 export default {
+  props: {
+    isActive: Boolean
+  },
   data: function () {
     return {
       password: "",
@@ -45,7 +38,7 @@ export default {
       }
       const hashPssword = md5(this.password);
       const body = {
-        email : "fatkullov1999@yandex.com",
+        email: localStorage.getItem("email"),
         password: hashPssword,
       };
       axios
@@ -55,9 +48,12 @@ export default {
           },
         })
         .then((res) => {
+          localStorage.removeItem("password")
+          localStorage.setItem("password", body.password)
+          alert("Пароль успешно заменен")
           this.resultString = res.data.message;
           console.log(res);
-          router.push({ path: '/' })
+          this.$emit('closeForm')
         })
         .catch((err) => {
           console.log(err);
@@ -67,8 +63,9 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .change_pass_form {
+  box-shadow: 0px 0px 0px 9999px rgba(0, 0, 0, 0.5);
   transform: translate(-50%, -50%);
   margin: auto;
   position: absolute;
@@ -102,6 +99,7 @@ input[type="submit"] {
   border-radius: 4px;
   cursor: pointer;
 }
+
 input[type="submit"]:hover {
   background-color: #4d8f4f;
 }
@@ -110,5 +108,8 @@ input[type="submit"]:hover {
 /* стили для заголовка */
 h2 {
   text-align: center;
+}
+.form-group input{
+  margin-left: 15px;
 }
 </style>

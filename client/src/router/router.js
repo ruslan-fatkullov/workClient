@@ -2,20 +2,10 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 
 const routes = [
-  /*{
-    path: '/',
-    name: 'UserAuth',
-    component: () => import('../components/UserAuth.vue')
-  },*/
   {
     path: '/login',
     name: 'UserAuth',
-    component: () => import('../components/userAuth/userAuthWrap.vue')
-  },
-  /*{
-    path: '/login',
-    name: 'UserSignUp',
-    component: () => import('../components/UserSignUp.vue')
+    component: () => import('../components/UserAuth.vue')
   },
   {
     path: '/forgotPassword',
@@ -23,15 +13,26 @@ const routes = [
     component: () => import('../components/ForgotPasswordComponent.vue')
   },
   {
-    path: '/mainpage',
-    name: 'MainPage',
-    component: () => import('../components/MainPage.vue')
+    path: '/registration',
+    name: 'UserSignUp',
+    component: () => import('../components/UserSignUp.vue')
+  },
+
+  {
+    path: '/about',
+    name: 'AboutPage',
+    component: () => import('../components/AboutPage.vue')
   },
   {
     path: '/changePassword',
     name: 'ChangePassword',
     component: () => import('../components/ChangePass.vue')
-  }*/
+  },
+  {
+    path: '/',
+    name: 'MainPage',
+    component: () => import('../components/MainPage.vue')
+  }
 ]
 
 const router = createRouter({

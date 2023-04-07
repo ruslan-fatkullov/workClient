@@ -10,6 +10,9 @@ const userController = require("../controller/user.userController.js");
 // регистрация нового пользователя
 router.get("/getUserByEmail", userController.getUserByEmail);
 
+// смена пароля
+router.post("/changePassword", LoginController.changePassword);
+
 // регистрация нового пользователя
 router.post("/signUp", SignInController.signUp);
 

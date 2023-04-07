@@ -90,6 +90,22 @@ exports.EmailConfirmSendMessage = (req, res) => {
     })
 }
 
+exports.changePassword = (req, res) => {
+    User.update(
+        { password: req.body.password },
+        { where: { email: req.body.email } }
+    ).then(result => {
+
+        res.json({ statusCode: 200, message: "Пароль изменен" })
+        console.log(result)
+
+    }).catch(err => {
+        res.json({ statusCode: 400, message: "Ошибка смены пароля" })
+        console.log(err)
+    })
+}
+
+
 function generatePassword() {
     var length = 8,
         charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";

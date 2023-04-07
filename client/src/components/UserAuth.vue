@@ -13,15 +13,19 @@
     <div class="resultString">
       <p v-if="isActive">{{ resultString }}</p>
     </div>
+    <div v-if="loading" class="spinner-border" style="margin-bottom: 10px;" role="status">
+      <span class="sr-only"></span>
+    </div>
     <button v-if="viewInput" type="submit" class="btn btn-primary">Войти</button>
-    <button v-if="sendEmailAgain" @click="sendEmailConfirmLink()" class="btn btn-primary">Отправить ссылку на подтверждение повторно</button>
+    <button v-if="sendEmailAgain" @click="sendEmailConfirmLink()" class="btn btn-primary">Отправить ссылку на
+      подтверждение повторно</button>
     <router-link class="forgot-password" to="/forgotPassword" exact>Забыли пароль?</router-link>
-    <div class="signup-link">Нет аккаунта? <router-link class="" to="/login" exact>Зарегистрируйтесь</router-link></div>
+    <div class="signup-link">Нет аккаунта? <router-link class="" to="/registration" exact>Зарегистрируйтесь</router-link>
+    </div>
   </form>
 </template>
 
 <script>
-
 import axios from "axios"
 const md5 = require('md5')
 import router from '../router/router.js'
@@ -33,7 +37,8 @@ export default {
       resultString: '',
       isActive: true,
       viewInput: true,
-      sendEmailAgain: false
+      sendEmailAgain: false,
+      loading: false
     }
   },
   methods: {
@@ -44,6 +49,7 @@ export default {
         return;
       }
 
+      this.loading = true
       const hashPssword = md5(this.password);
       const newUser = {
         email: this.email,
@@ -55,17 +61,24 @@ export default {
           "Content-type": "application/json"
         }
       }).then((res) => {
-        this.resultString = res.data.message
+        setTimeout(() => {
+          this.resultString = res.data.message
 
-        let ResultStringElement = document.querySelector('.resultString p');
-        if (res.data.statusCode == 200) {
-          ResultStringElement.style.color = 'green';
-          router.push({ path: '/mainpage' })
-        } else if (res.data.statusCode == 201) {
-          this.sendEmailAgain = true
-          this.viewInput = false
-          ResultStringElement.style.color = 'green';
-        }
+          let ResultStringElement = document.querySelector('.resultString p');
+          if (res.data.statusCode == 200) {
+            ResultStringElement.style.color = 'green';
+            localStorage.setItem('email', newUser.email);
+            localStorage.setItem('password', newUser.password)
+            router.push({ path: '/' })
+          } else if (res.data.statusCode == 201) {
+            this.sendEmailAgain = true
+            this.viewInput = false
+            ResultStringElement.style.color = 'green';
+          }
+
+          this.loading = false
+        }, 1000)
+
 
       }).catch((err) => {
         console.log(err)
@@ -73,7 +86,7 @@ export default {
 
 
     },
-    sendEmailConfirmLink(){
+    sendEmailConfirmLink() {
       this.sendEmailAgain = false
       this.viewInput = true
 
@@ -91,7 +104,8 @@ export default {
         console.log(err)
       })
     }
-  }
+  },
+
 }
 </script>
 
