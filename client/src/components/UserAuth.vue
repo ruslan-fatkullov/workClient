@@ -29,6 +29,7 @@
 import axios from "axios"
 const md5 = require('md5')
 import router from '../router/router.js'
+import config from "@/config"
 export default {
   data() {
     return {
@@ -56,7 +57,7 @@ export default {
         password: hashPssword,
       }
 
-      axios.post("http://localhost:8080/api/login", newUser, {
+      axios.post(config.SERVER_HOST+"/api/login", newUser, {
         headers: {
           "Content-type": "application/json"
         }
@@ -93,7 +94,7 @@ export default {
       const email = {
         email: this.email,
       }
-      axios.post("http://localhost:8080/api/sendLinkToMail", email, {
+      axios.post(config.SERVER_HOST+"/api/sendLinkToMail", email, {
         headers: {
           "Content-type": "application/json"
         }

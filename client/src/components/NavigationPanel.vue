@@ -17,6 +17,11 @@
                     <router-link class="nav-link" to="/about">Личный кабинет</router-link>
                 </div>
             </li>
+            <li class="nav-item">
+                <div class="">
+                    <router-link class="nav-link" to="/adminPanel">Панель администрирования</router-link>
+                </div>
+            </li>
 
         </ul>
     </div>
@@ -53,7 +58,7 @@ export default {
 .nav-link {
     position: relative;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 24px;
+    font-size: 16px;
     color: rgba(255, 255, 255, 0.753);
     text-decoration: none;
     line-height: 2;

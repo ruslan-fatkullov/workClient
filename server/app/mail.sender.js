@@ -29,9 +29,9 @@ exports.sendMessage = (email, tokenOrPassword, subject) => {
     }
     sendmail(mailBody, function (err, reply) {
         if (err) {
-            console.log(err);
-        } else {
-            console.log('Письмо успешно отправлено: ' + reply);
-        }
+            return {success: false, result: err}
+        } 
+        return {success: true, result: reply}
+        
     });
 }

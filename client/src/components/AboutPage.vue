@@ -179,4 +179,5 @@ export default {
     transform: scale(1.01);
     background-color: rgb(243, 20, 16);
     cursor: pointer;
-}</style>
+}
+</style>

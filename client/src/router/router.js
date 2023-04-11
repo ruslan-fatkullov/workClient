@@ -32,6 +32,11 @@ const routes = [
     path: '/',
     name: 'MainPage',
     component: () => import('../components/MainPage.vue')
+  },
+  {
+    path: '/adminPanel',
+    name: 'AdminPanek',
+    component: () => import('../components/AdminPanelPage.vue')
   }
 ]
 

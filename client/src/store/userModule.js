@@ -1,11 +1,15 @@
 import axios from "axios"
+import config from "@/config"
 //const md5 = require('md5')
 export default {
     actions: {
+        
+    },
+    mutations: {
         loginUser({ commit }, user) {
             return new Promise((resolve, reject) => {
                 commit('auth_request')
-                axios.post("http://localhost:8080/api/login", user, {
+                axios.post(config.SERVER_HOST + "/api/login", user, {
                     headers: {
                         "Content-type": "application/json"
                     }
@@ -18,11 +22,12 @@ export default {
             })
         }
     },
-    mutations: {
-
-    },
     state: {
-        user: {}
+        user: {
+            firstName: "",
+            lastName: "",
+            email: "",
+        }
     },
     getters: {
 

@@ -5,7 +5,16 @@ const router = express.Router()
 const SignInController = require("../controller/user.RegisterController.js");
 const LoginController = require("../controller/user.LoginController.js");
 const userController = require("../controller/user.userController.js");
+const userAdminController = require("../controller/user.AdminComtroller.js");
 
+// удаление пользователя по id
+router.put("/updateUser", userAdminController.UpdateUserById)
+
+// удаление пользователя по id
+router.delete("/deleteUser", userAdminController.DeleteUserById)
+
+// получение всех пользователей
+router.get("/getAllUser", userAdminController.GetAllUser)
 
 // регистрация нового пользователя
 router.get("/getUserByEmail", userController.getUserByEmail);
