@@ -3,72 +3,113 @@
     <h2>Авторизация</h2>
     <div v-if="viewInput" class="form-group">
       <label for="email">Email</label>
-      <input v-model="email" type="email" class="form-control" id="email" name="email" placeholder="Введите email">
+      <input
+        v-model="email"
+        type="email"
+        class="form-control"
+        id="email"
+        name="email"
+        placeholder="Введите email"
+        :disabled="isRequest ? true : false"
+      />
     </div>
     <div v-if="viewInput" class="form-group">
       <label for="password">Пароль</label>
-      <input v-model="password" type="password" class="form-control" id="password" name="password"
-        placeholder="Введите пароль">
+      <input
+        v-model="password"
+        type="password"
+        class="form-control"
+        id="password"
+        name="password"
+        placeholder="Введите пароль"
+        :disabled="isRequest ? true : false"
+      />
     </div>
     <div class="resultString">
       <p v-if="isActiveResultString">{{ resultString }}</p>
     </div>
-    <div v-if="loading" class="spinner-border" style="margin-bottom: 10px;" role="status">
+    <div
+      v-if="loading"
+      class="spinner-border"
+      style="margin-bottom: 10px"
+      role="status"
+    >
       <span class="sr-only"></span>
     </div>
-    <button v-if="viewInput" type="submit" class="btn btn-primary">Войти</button>
-    <button v-if="sendEmailAgain" @click="sendEmailConfirmLink()" class="btn btn-primary">Отправить ссылку на
-      подтверждение повторно</button>
-    <router-link class="forgot-password" to="/forgotPassword" exact>Забыли пароль?</router-link>
-    <div class="signup-link">Нет аккаунта? <router-link class="" to="/registration" exact>Зарегистрируйтесь</router-link>
+    <button
+      v-if="viewInput"
+      type="submit"
+      class="btn btn-primary"
+      :disabled="isRequest ? true : false"
+    >
+      Войти
+    </button>
+    <button
+      v-if="sendEmailAgain"
+      @click="sendEmailConfirmLink()"
+      class="btn btn-primary"
+    >
+      Отправить ссылку на подтверждение повторно
+    </button>
+    <router-link class="forgot-password" to="/forgotPassword" exact
+      >Забыли пароль?</router-link
+    >
+    <div class="signup-link">
+      Нет аккаунта?
+      <router-link class="" to="/registration" exact
+        >Зарегистрируйтесь</router-link
+      >
     </div>
   </form>
 </template>
 
 <script>
-import store from '../store'
+import store from "../store";
 export default {
   data() {
     return {
-      email: '',
-      password: '',
-      resultString: '',
+      email: "",
+      password: "",
+      resultString: "",
       isActiveResultString: true,
       viewInput: true,
       sendEmailAgain: false,
-      loading: false
-    }
+      loading: false,
+      isRequest: false,
+    };
   },
   methods: {
     login() {
-      if (this.email == '' || this.password == '') {
+      this.loading = true;
+      this.isRequest = true;
+      if (this.email == "" || this.password == "") {
         this.resultString = "Заполните все поля";
         this.isActive = true;
         return;
       }
-      this.loading = true
-      store.dispatch('loginUser', { email: this.email, password: this.password }).then(() => {
-        this.resultString = store.getters.getLoginResultMessage
-        this.loading = false
-        if (store.getters.getLoginStatus == "not confirmed") {
-          this.sendEmailAgain = true
-          this.viewInput = false
-        }
-      })
-
+      setTimeout(() => {
+        store
+          .dispatch("loginUser", { email: this.email, password: this.password })
+          .then(() => {
+            this.isRequest = false;
+            this.resultString = store.getters.getLoginResultMessage;
+            this.loading = false;
+            if (store.getters.getLoginStatus == "not confirmed") {
+              this.sendEmailAgain = true;
+              this.viewInput = false;
+            }
+          });
+      }, 2000);
     },
     sendEmailConfirmLink() {
-      this.sendEmailAgain = false
-      this.viewInput = true
+      this.sendEmailAgain = false;
+      this.viewInput = true;
       /////??????
-      store.dispatch('sendEmailConfirm', this.email).then(() => { })
+      store.dispatch("sendEmailConfirm", this.email).then(() => {});
       /////??????
-
-
-    }
+    },
   },
-
-}
+};
 </script>
 
 <style>
