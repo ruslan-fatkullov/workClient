@@ -11,7 +11,7 @@
         placeholder="Введите пароль">
     </div>
     <div class="resultString">
-      <p v-if="isActive">{{ resultString }}</p>
+      <p v-if="isActiveResultString">{{ resultString }}</p>
     </div>
     <div v-if="loading" class="spinner-border" style="margin-bottom: 10px;" role="status">
       <span class="sr-only"></span>
@@ -26,17 +26,14 @@
 </template>
 
 <script>
-import axios from "axios"
-const md5 = require('md5')
-import router from '../router/router.js'
-import config from "@/config"
+import store from '../store'
 export default {
   data() {
     return {
       email: '',
       password: '',
       resultString: '',
-      isActive: true,
+      isActiveResultString: true,
       viewInput: true,
       sendEmailAgain: false,
       loading: false
@@ -49,61 +46,25 @@ export default {
         this.isActive = true;
         return;
       }
-
       this.loading = true
-      const hashPssword = md5(this.password);
-      const newUser = {
-        email: this.email,
-        password: hashPssword,
-      }
-
-      axios.post(config.SERVER_HOST+"/api/login", newUser, {
-        headers: {
-          "Content-type": "application/json"
+      store.dispatch('loginUser', { email: this.email, password: this.password }).then(() => {
+        this.resultString = store.getters.getLoginResultMessage
+        this.loading = false
+        if (store.getters.getLoginStatus == "not confirmed") {
+          this.sendEmailAgain = true
+          this.viewInput = false
         }
-      }).then((res) => {
-        setTimeout(() => {
-          this.resultString = res.data.message
-
-          let ResultStringElement = document.querySelector('.resultString p');
-          if (res.data.statusCode == 200) {
-            ResultStringElement.style.color = 'green';
-            localStorage.setItem('email', newUser.email);
-            localStorage.setItem('password', newUser.password)
-            router.push({ path: '/' })
-          } else if (res.data.statusCode == 201) {
-            this.sendEmailAgain = true
-            this.viewInput = false
-            ResultStringElement.style.color = 'green';
-          }
-
-          this.loading = false
-        }, 1000)
-
-
-      }).catch((err) => {
-        console.log(err)
       })
-
 
     },
     sendEmailConfirmLink() {
       this.sendEmailAgain = false
       this.viewInput = true
+      /////??????
+      store.dispatch('sendEmailConfirm', this.email).then(() => { })
+      /////??????
 
-      const email = {
-        email: this.email,
-      }
-      axios.post(config.SERVER_HOST+"/api/sendLinkToMail", email, {
-        headers: {
-          "Content-type": "application/json"
-        }
-      }).then((res) => {
-        this.resultString = res.data.message
 
-      }).catch((err) => {
-        console.log(err)
-      })
     }
   },
 

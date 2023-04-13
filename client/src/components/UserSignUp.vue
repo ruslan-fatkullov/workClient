@@ -30,7 +30,7 @@
         <div class="resultString">
             <p v-if="isActive">{{ resultString }}</p>
         </div>
-
+ 
         <div v-if="hide_content" class="form-group">
             <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
         </div>
@@ -112,7 +112,7 @@ export default {
 
 
         },
-        
+
     }
 }
 </script>

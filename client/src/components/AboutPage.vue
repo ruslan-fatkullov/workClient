@@ -62,7 +62,7 @@
 import axios from 'axios'
 import conf from "../config"
 import router from '../router/router'
-import changePassword from "./ChangePass.vue"
+import changePassword from "../components/ChangePass.vue"
 export default {
     data() {
         return {

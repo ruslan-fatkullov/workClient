@@ -1,35 +1,51 @@
-import axios from "axios"
 import config from "@/config"
-//const md5 = require('md5')
+import axios from "axios"
 export default {
-    actions: {
-        
+    state: {
+        users: [],
+        alertMessage: ""
     },
-    mutations: {
-        loginUser({ commit }, user) {
-            return new Promise((resolve, reject) => {
-                commit('auth_request')
-                axios.post(config.SERVER_HOST + "/api/login", user, {
-                    headers: {
-                        "Content-type": "application/json"
-                    }
-                }).then((res) => {
-                    resolve(res)
-                }).catch((err) => {
-                    console.log(err)
-                    reject(err)
-                })
+    actions: {
+        async getUsersAction(context) {
+            let res = await axios.get(config.SERVER_HOST + "/api/getAllUser")
+            res.data.users.forEach(element => {
+                element.active = element.active ? true : false
+            })
+            context.commit('getAllUser', res.data.users);
+        },
+        async deleteUserAction(context, user) {
+            await axios.delete(config.SERVER_HOST + "/api/deleteUser", { params: { id: user.id } }).then((res) => {
+                if (res.status == 200) {
+                    context.commit('deleteUser', user)
+                }
+            })
+        },
+        async updateUserAction(context, user) {
+            await axios.put(config.SERVER_HOST + "/api/updateUser", user).then((res)=>{
+                if (res.status == 200) {
+                    context.commit('updateUser', user)
+                }
             })
         }
     },
-    state: {
-        user: {
-            firstName: "",
-            lastName: "",
-            email: "",
+    mutations: {
+        getAllUser(state, data) {
+            state.users = data
+        },
+        deleteUser(state, user) {
+            state.users = state.users.filter((us) => { return us != user });
+        },
+        updateUser() {
+
         }
     },
-    getters: {
 
+    getters: {
+        getUsers: state => {
+            return state.users
+        },
+        getAlertMessage: state => {
+            return state.alertMessage
+        }
     }
 }

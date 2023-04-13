@@ -27,9 +27,8 @@
                         <p v-else>{{ user.email }}</p>
                     </div>
                     <div class="col table-data">
-                        <input v-if="changeMode[users.indexOf(user)]" type="checkbox"
-                            v-model="isActiveUser[users.indexOf(user)]">
-                        <input v-else type="checkbox" v-model="isActiveUser[users.indexOf(user)]" disabled>
+                        <input v-if="changeMode[users.indexOf(user)]" type="checkbox" v-model=user.active>
+                        <input v-else type="checkbox" v-model=user.active disabled>
                     </div>
                     <div class="col table-data">
                         <div id=user.id v-if="!changeMode[users.indexOf(user)]" class="btn btn-warning"
@@ -37,22 +36,26 @@
                         <div v-else class="btn btn-success" @click="changeUser(user)">Подтвердить</div>
                     </div>
                     <div class="col table-data">
-                        <div v-if="changeMode[users.indexOf(user)]" class="btn btn-danger" @click="undoChanges(user)">
+                        <div v-if="changeMode[users.indexOf(user)]" @click="undoChange(users.indexOf(user))"
+                            class="btn btn-danger">
                             Отменить</div>
-                        <div v-else class="btn btn-danger" @click="deleteUser(user.id)">Удалить</div>
+                        <div v-else class="btn btn-danger" @click="setDeleteUser(user)">Удалить</div>
                     </div>
                 </div>
             </div>
         </div>
 
         <div v-if="isActiveAlert" class="alert_window">{{ alertMessage }}</div>
+        <ConfirmDialogVue v-if="deleteDialog" v-bind:dialog-title="dialogTitle" @undoAction="undoDelete()"
+            @confirmAction="deleteUser(userIdToDelete)">
+        </ConfirmDialogVue>
 
     </div>
 </template>
 
 <script>
-import axios from 'axios'
-import config from '../config'
+import ConfirmDialogVue from './ConfirmDialog.vue'
+import store from "../store/index"
 export default {
     data() {
         return {
@@ -61,81 +64,59 @@ export default {
             changeMode: [],
             isActiveAlert: false,
             alertMessage: "",
+            deleteDialog: false,
+            userIdToDelete: "",
+            dialogTitle: "Вы уверены что хотите удалить этого пользователя?"
         }
     },
     mounted() {
-        axios.get(config.SERVER_HOST + "/api/getAllUser").then((res) => {
-            this.users = res.data.users
-            this.isActiveUser = this.isACT()
-            this.users.forEach(element => {
-                this.changeMode[this.users.indexOf(element)] = false
-            })
-        }).catch((err) => {
-            console.log(err)
+        store.dispatch('getUsersAction').then(() => {
+            this.users = store.getters.getUsers
         })
     },
     methods: {
-        deleteUser(userId) {
-            axios.delete(config.SERVER_HOST + "/api/deleteUser", { params: { id: userId } }).then((res) => {
+        deleteUser(user) {
+            this.deleteDialog = false
+            store.dispatch('deleteUserAction', user).then(() => {
+                this.users = store.getters.getUsers;
+                this.alertMessage = "Пользователь удален"
                 this.isActiveAlert = true
-                this.alertMessage = res.data.message
+            })
+            setTimeout(() => {
+                this.isActiveAlert = false
+            }, 2000)
+        },
+        changeUser(user) {
+            if (this.changeMode[this.users.indexOf(user)] == 1) {
+                store.dispatch('updateUserAction', user).then(() => {
+                    this.alertMessage = "Пользователь обновлен"
+                    this.isActiveAlert = true
+                })
                 setTimeout(() => {
                     this.isActiveAlert = false
                 }, 2000)
-            }).then(() => {
-                axios.get(config.SERVER_HOST + "/api/getAllUser").then((res) => {
-                    this.users = res.data.users
-                    this.isActiveUser = this.isACT()
-                    this.users.forEach(element => {
-                        this.changeMode[this.users.indexOf(element)] = false
-                    })
-                }).catch((err) => {
-                    console.log(err)
-                })
-            })
-
-        },
-        isACT() {
-            const activeUser = []
-            this.users.forEach(element => {
-                if (element.active == 1) {
-                    activeUser.push(true)
-                } else {
-                    activeUser.push(false)
-                }
-            });
-            return activeUser
-        },
-        undoChanges(user) {
-            axios.get(config.SERVER_HOST + "/api/getAllUser").then((res) => {
-                this.users = res.data.users
-                this.isActiveUser = this.isACT()
-                this.users.forEach(element => {
-                    this.changeMode[this.users.indexOf(element)] = false
-                })
-            }).catch((err) => {
-                console.log(err)
-            })
-            this.changeMode[this.users.indexOf(user)] = !this.changeMode[this.users.indexOf(user)]
-        },
-        changeUser(user) {
-
-            if (this.changeMode[this.users.indexOf(user)] == 1) {
-                let newUser = user
-                newUser.active = this.isActiveUser[this.users.indexOf(user)] ? 1 : 0
-                console.log(this.isActiveUser[this.users.indexOf(user)])
-                axios.put(config.SERVER_HOST + "/api/updateUser", newUser).then((res) => {
-                    this.isActiveAlert = true
-                    this.alertMessage = res.data.message
-                    setTimeout(() => {
-                        this.isActiveAlert = false
-                    }, 2000)
-                })
-
             }
             this.changeMode[this.users.indexOf(user)] = !this.changeMode[this.users.indexOf(user)]
+
+        },
+        undoDelete() {
+            this.deleteDialog = !this.deleteDialog
+        },
+        setDeleteUser(userId) {
+            this.userIdToDelete = userId
+            this.deleteDialog = !this.deleteDialog
+        },
+        undoChange(userId) {
+            this.changeMode[userId] = false
+            store.dispatch('getUsersAction').then(() => {
+                this.users = store.getters.getUsers
+            })
         }
     },
+    components: {
+        ConfirmDialogVue,
+    },
+
 
 
 }
@@ -225,7 +206,6 @@ export default {
     color: #000;
     background-color: rgb(223, 223, 40);
     animation: slideUp 2s ease infinite;
-    ;
 }
 
 @keyframes slideUp {
