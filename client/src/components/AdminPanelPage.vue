@@ -43,6 +43,34 @@
                     </div>
                 </div>
             </div>
+
+
+
+
+        </div>
+        <div class="table">
+            <div class="head">
+                <div class="row table-row">
+                    <div class="col table-header">Email</div>
+                    <div class="col table-header">ФИО</div>
+                    <div class="col table-header">Сообщение</div>
+                </div>
+            </div>
+
+            <div class="table-body">
+                <div class="row table-row" v-for="help in helps" :key="help.id">
+                    <div class="col table-data">
+                        <p>{{ help.email }}</p>
+                    </div>
+                    <div class="col table-data">
+                        <p>{{ help.fullName }}</p>
+                    </div>
+                    <div class="col table-data">
+                        <p>{{ help.message }}</p>
+                    </div>
+
+                </div>
+            </div>
         </div>
 
         <div v-if="isActiveAlert" class="alert_window">{{ alertMessage }}</div>
@@ -66,13 +94,29 @@ export default {
             alertMessage: "",
             deleteDialog: false,
             userIdToDelete: "",
-            dialogTitle: "Вы уверены что хотите удалить этого пользователя?"
+            dialogTitle: "Вы уверены что хотите удалить этого пользователя?",
+
+            helps: [],
         }
     },
-    mounted() {
-        store.dispatch('getUsersAction').then(() => {
-            this.users = store.getters.getUsers
+    created() {
+        // получение списка сообщений
+        store.dispatch('getAllMessageAction').then(() => {
+            this.helps = store.getters.getAllHelpMessage;
         })
+        //
+    },
+    beforeMount() {
+        // получение списка пользователей
+        store.dispatch('getUsersAction').then(() => {
+            this.users = store.getters.getUsers;
+        })
+
+
+    },
+    mounted() {
+
+
     },
     methods: {
         deleteUser(user) {

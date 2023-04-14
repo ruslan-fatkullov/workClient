@@ -4,6 +4,7 @@
 
 <script>
 import MainWrap from './components/MainWrap.vue';
+require('bootstrap');
 export default {
   components:{
     MainWrap,

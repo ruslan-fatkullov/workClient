@@ -7,7 +7,7 @@
         </div>
         <div v-if="hide_content" class="form-group">
             <label for="last-name">Фамилия:</label>
-            <input v-model="secondName" type="text" class="form-control" id="last-name" name="last-name" required>
+            <input v-model="lastName" type="text" class="form-control" id="last-name" name="last-name" required>
         </div>
         <div v-if="hide_content" class="form-group">
             <label for="username">Логин:</label>
@@ -30,25 +30,26 @@
         <div class="resultString">
             <p v-if="isActive">{{ resultString }}</p>
         </div>
- 
+
         <div v-if="hide_content" class="form-group">
             <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
         </div>
-        <p class="login-link">Уже зарегистрированы?
-            <router-link class="btn btn-secondary" to="/" exact>Войти</router-link>
-        </p>
+        <div class="already-register">
+            <p class="login-link">Уже зарегистрированы?
+                <router-link class="btn btn-link" to="/" exact>Войти</router-link>
+            </p>
+        </div>
+
     </form>
 </template>
 
 <script>
-import axios from "axios"
-import router from "../router/router.js"
-const md5 = require('md5')
+import store from "../store";
 export default {
     data() {
         return {
             firstName: '',
-            secondName: '',
+            lastName: '',
             email: '',
             password: '',
             password_confirmation: '',
@@ -61,55 +62,22 @@ export default {
     },
     methods: {
         handleRegister() {
-
-
-            if (this.password_confirmation !== this.password) {
-                this.resultString = "Пароли не совпадают";
-                this.isActive = true;
-                return;
-            }
-            if (this.firstName == '' || this.secondName == '' || this.email == '' || this.password == '' || this.password_confirmation == '') {
-                this.resultString = "Заполните все поля";
-                this.isActive = true;
-                return;
-            }
             this.loading_content = true
-
-            const hashPssword = md5(this.password);
-            const newUser = {
-                firstName: this.firstName,
-                lastName: this.secondName,
-                email: this.email,
-                password: hashPssword,
-            }
-
-            axios.post("http://localhost:8080/api/signUp", newUser, {
-                headers: {
-                    "Content-type": "application/json"
-                }
-            }).then((res) => {
-                setTimeout(
-                    () => {
-                        this.loading_content = false
-                        this.resultString = res.data.message
-
-                        let ResultStringElement = document.querySelector('.resultString p');
-                        if (res.data.statusCode == 200) {
-                            ResultStringElement.style.color = 'green';
-                            this.hide_content = false
-                            router.push('/login');
-                        } else {
-                            ResultStringElement.style.color = 'red';
-                        }
-                    },
-                    1 * 1000
-                );
-
-
-            }).catch((err) => {
-                console.log(err)
-            })
-
+            setTimeout(() => {
+                store.dispatch("registerUser", {
+                    firstName: this.firstName,
+                    lastName: this.lastName,
+                    email: this.email,
+                    password: this.password,
+                    password_confirmation: this.password_confirmation
+                }).then(() => {
+                    this.loading_content = false
+                    this.isActive = true;
+                    this.resultString = store.getters.getRegResultString;
+                }).catch(() => {
+                    console.log("Ошибка")
+                })
+            }, 500)
 
         },
 
@@ -117,7 +85,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .spinner-wrapper {
     position: absolute;
     left: 0;
@@ -130,11 +98,11 @@ export default {
 }
 
 .spinner {
-    position: absolute;
+    position: relative;
     height: 50px;
     width: 50px;
-    top: 50%;
-    left: 50%;
+    margin: auto;
+    top: 40%;
     border-left: 3px solid rgb(92, 47, 255);
     border-bottom: 3px solid rgb(92, 47, 255);
     border-right: 3px solid rgb(92, 47, 255);
@@ -172,6 +140,9 @@ export default {
 }
 
 .resultString p {
-    color: red;
+    color: rgb(128, 122, 122);
+}
+.already-register{
+    margin-top: 10px;
 }
 </style>

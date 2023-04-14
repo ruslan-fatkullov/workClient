@@ -14,6 +14,11 @@
             </li>
             <li class="nav-item">
                 <div class="">
+                    <router-link class="nav-link" to="/techSupport">Техническая поддержка</router-link>
+                </div>
+            </li>
+            <li class="nav-item">
+                <div class="">
                     <router-link class="nav-link" to="/about">Личный кабинет</router-link>
                 </div>
             </li>

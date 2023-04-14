@@ -35,8 +35,13 @@ const routes = [
   },
   {
     path: '/adminPanel',
-    name: 'AdminPanek',
+    name: 'AdminPanel',
     component: () => import('../components/AdminPanelPage.vue')
+  },
+  {
+    path: '/techSupport',
+    name: 'TechnicalSupportPage',
+    component: () => import('../components/TechnicalSupportPage.vue')
   }
 ]
 

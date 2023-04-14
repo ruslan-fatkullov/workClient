@@ -1,16 +1,14 @@
 <template>
   <form class="forgot-pass-from" @submit.prevent="changePassword()">
     <div class="form-group">
-      <label for="email">Email</label>
+      <label for="email">Введите свой Email</label>
       <input v-model="email" type="email" id="email" name="email" required />
     </div>
     <div>
       <p>{{ resultString }}</p>
     </div>
-    <div class="form-group">
-      <button type="submit" id="get-code">Поменять пароль</button>
-    </div>
-    <div class="form-group">
+    <div class="button-group">
+      <button type="submit">Отправить</button>
       <router-link class="btn-back" to="/" exact>Вернуться</router-link>
     </div>
   </form>
@@ -50,7 +48,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .forgot-pass-from {
   position: absolute;
   top: 50%;
@@ -83,7 +81,12 @@ input[type="text"] {
 }
 
 .btn-back {
-  margin-right: 15px;
+  margin-left: 15px;
+  line-height: 50px;
+}
+.button-group{
+  display: flex;
+  justify-content: center;
 }
 
 .code-group {

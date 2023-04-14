@@ -10,7 +10,10 @@ export default {
     state: {
         authUser: {},
         loginStatus: "",
-        loginResultMessage: ""
+        loginResultMessage: "",
+
+        registerUser: {},
+        regResultMessage: ""
     },
     actions: {
         async loginUser(context, user) {
@@ -35,6 +38,27 @@ export default {
                 return err
             })
         },
+        async registerUser(context, user) {
+            
+            if (user.password_confirmation !== user.password) {
+                context.commit("setRegResultMessage", "Пароли не совпадают")
+                return;
+            }
+            if (user.firstName == '' || user.lastName == '' || user.email == '' || user.password == '' || user.password_confirmation == '') {
+                context.commit("setRegResultMessage", "Заполните все поля")
+                return;
+            }
+            user.password = md5(user.password)
+
+            context.commit("setRegUser", user)
+            axios.post(config.SERVER_HOST + "/api/signUp", user).then((res) => {
+                context.commit('setRegResultMessage', res.data.message)
+                if (res.data.statusCode == 200) {
+                    router.push("/login")
+                }
+            })
+
+        },
         async sendEmailConfirm(email) {
             console.log(email)
             axios.post(config.SERVER_HOST + "/api/sendLinkToMail", { params: { email: email } }).then(() => {
@@ -51,6 +75,9 @@ export default {
         setLoginResultMessage(state, message) {
             state.loginResultMessage = message
         },
+        setRegResultMessage(state, message) {
+            state.regResultMessage = message
+        },
 
         loginRequest(state) {
             state.loginStatus = "loading"
@@ -63,6 +90,9 @@ export default {
         },
         loginNotConfirmed(state) {
             state.loginStatus = "not confirmed"
+        },
+        setRegUser(state, user) {
+            state.registerUser = user
         }
     },
     getters: {
@@ -72,5 +102,8 @@ export default {
         getLoginStatus: state => {
             return state.loginStatus
         },
+        getRegResultString: state => {
+            return state.regResultMessage
+        }
     }
 }

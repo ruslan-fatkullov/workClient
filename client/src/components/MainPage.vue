@@ -23,7 +23,7 @@ import axios from 'axios'
 export default {
     data() {
         return {
-            loadPage: false
+            loadPage: true
         }
     },
     methods: {
@@ -80,19 +80,17 @@ export default {
     right: 0;
     bottom: 0;
     /* фоновый цвет элемента */
-    background: #e0e0e0;
+    background: #212529;
     /* размещаем блок над всеми элементами на странице (это значение должно быть больше, чем у любого другого позиционированного элемента на странице) */
     z-index: 1001;
 }
 
 .preloader__row {
     position: relative;
-    top: 50%;
-    left: 50%;
-    width: 70px;
-    height: 70px;
-    margin-top: -35px;
-    margin-left: -35px;
+    margin: auto;
+    top: 45%;
+    width: 10%;
+    height: 10%;
     text-align: center;
     animation: preloader-rotate 2s infinite linear;
 }

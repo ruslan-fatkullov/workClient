@@ -19,8 +19,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const userRoutes = require("./app/routes/userRoutes.js");
+const helpRoutes = require("./app/routes/helpRoutes.js")
 
 app.use("/api", userRoutes);
+app.use("/help", helpRoutes)
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
