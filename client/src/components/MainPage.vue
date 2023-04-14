@@ -7,11 +7,14 @@
             </div>
         </div>
         <h1>Главная</h1>
-        <p style="font-size: 24px;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita asperiores quas
-            impedit vero, modi repellendus esse accusamus fugit praesentium tempore delectus, voluptates eligendi similique
-            neque dolore vitae dolores commodi Lorem ipsum dolor sit amet consectetur adipisicing elit. Expedita asperiores
-            quas impedit vero, modi repellendus esse accusamus fugit praesentium tempore delectus, voluptates eligendi
-            similique neque dolore vitae dolores commodi qui.</p>
+        <p style="font-size: 24px;">сгенерируй осмысленный текст, не содержащий грамматических ошибок.
+            Выбери из списка одну букву и напиши слово, которое будет начинаться на эту букву.
+            Не используй в слове букву, которая уже есть в списке.
+            Если слово начинается на одну из букв, то можно использовать любую другую букву.
+            Например: В слове "охота" нельзя использовать буквы "а" и "о". В случае, если в слове есть буква "в", то
+            нельзя использовать ни "а", ни "о", потому что это две разные буквы.
+            В списке есть только одна буква "г".
+            Напиши слово "га"</p>
 
     </div>
 </template>
@@ -19,58 +22,45 @@
 <script>
 import router from '../router/router'
 import axios from 'axios'
-//import router from "../router"
+import config from '../config'
+
+
 export default {
     data() {
         return {
             loadPage: true
         }
     },
-    methods: {
-        logout() {
-            localStorage.removeItem("email")
-            localStorage.removeItem("password")
-            router.push({ path: "/login" })
-        },
-        aboutPage() {
-            router.push({ path: "/about" })
-        }
-    },
     beforeCreate() {
         const em = localStorage.getItem("email")
         const ps = localStorage.getItem("password")
         if (em == null || ps == null) {
-            router.push({ path: "/login" })
+            router.push({path: "/login"})
             return
         }
         const newUser = {
             email: em,
             password: ps
         }
-        axios.post("http://localhost:8080/api/login", newUser, {
-            headers: {
-                "Content-type": "application/json"
-            }
-        }).then((res) => {
-            if (res.data.statusCode == 200) {
+        axios.post(config.SERVER_HOST + "/api/login", newUser, {}).then((res) => {
+            if (res.data.statusCode === 200) {
                 this.loadPage = false
                 return
             }
-            router.push({ path: "/login" })
+            router.push({path: "/login"})
         }).catch((err) => {
             console.log(err)
         })
     },
-    components: {
-    }
 }
 </script>
 
 <style>
-.main-page{
+.main-page {
     background-color: #212529;
     color: #e0e0e0;
 }
+
 .preloader {
     /*фиксированное позиционирование*/
     position: fixed;

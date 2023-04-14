@@ -3,6 +3,7 @@
         <h1>Техническая поддержка</h1>
         <div class="container form-tech-support">
             <form @submit.prevent="sendMessage()">
+
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -19,10 +20,11 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-
                         <div class="form-group">
-                            <textarea v-model=message placeholder="Подробно опишите вашу проблему" id="message" cols="30"
-                                rows="100"></textarea>
+                            <textarea v-model=message
+                                      placeholder="Подробно опишите вашу проблему" id="message"
+                                      cols="30"
+                                      rows="100"></textarea>
                         </div>
                     </div>
                 </div>
@@ -30,18 +32,22 @@
                     <div class="col-md-12">
 
                         <div class="form-group">
-                            <button type="submit" class="btn btn-primary send-help-button"
-                                :disabled="isDisable ? disabled : ''">Отправить</button>
+                            <button type="submit"
+                                    class="btn btn-primary send-help-button"
+                                    v-bind:disabled="!isDisable">Отправить
+                            </button>
                         </div>
                     </div>
                 </div>
             </form>
+
         </div>
     </div>
 </template>
 
 <script>
 import store from '../store'
+
 export default {
     data() {
         return {
@@ -52,11 +58,16 @@ export default {
         }
     },
     methods: {
+
         sendMessage() {
-            store.dispatch("sendMessageAction", {email: this.email, fullName: this.fullName, message: this.message})
+            store.dispatch("sendMessageAction", {
+                email: this.email,
+                fullName: this.fullName,
+                message: this.message
+            })
         },
         computedFields() {
-            if (this.email != "" && this.fullName != "" && this.message != "") {
+            if (this.email !== "" && this.fullName !== "" && this.message !== "") {
                 this.isDisable = true
                 return
             }
@@ -67,17 +78,17 @@ export default {
         message() {
             this.computedFields()
         },
-        email(){
+        email() {
             this.computedFields()
         },
-        fullName(){
+        fullName() {
             this.computedFields()
         }
     }
 }
 </script>
 
-<style scopes >
+<style scoped>
 .tech-support {
     color: aliceblue;
 }

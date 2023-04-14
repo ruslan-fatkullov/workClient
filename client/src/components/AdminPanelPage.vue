@@ -1,6 +1,6 @@
 <template>
     <div class="container admin-panel">
-
+        <!--<AdminPanelTable></AdminPanelTable>-->
         <div class="table">
             <div class="head">
                 <div class="row table-row">
@@ -43,22 +43,22 @@
                     </div>
                 </div>
             </div>
-
-
-
-
         </div>
+
+
+
         <div class="table">
             <div class="head">
                 <div class="row table-row">
                     <div class="col table-header">Email</div>
                     <div class="col table-header">ФИО</div>
                     <div class="col table-header">Сообщение</div>
+                    <div class="col table-header"></div>
                 </div>
             </div>
 
             <div class="table-body">
-                <div class="row table-row" v-for="help in helps" :key="help.id">
+                <div class="row table-row-helps" v-for="help in helps" :key="help.id">
                     <div class="col table-data">
                         <p>{{ help.email }}</p>
                     </div>
@@ -69,10 +69,13 @@
                         <p>{{ help.message }}</p>
                     </div>
 
+                    <div class="col table-data">
+                        <div class="btn btn-danger" @click="deleteHelpMessage(help)">Удалить</div>
+                    </div>
+
                 </div>
             </div>
         </div>
-
         <div v-if="isActiveAlert" class="alert_window">{{ alertMessage }}</div>
         <ConfirmDialogVue v-if="deleteDialog" v-bind:dialog-title="dialogTitle" @undoAction="undoDelete()"
             @confirmAction="deleteUser(userIdToDelete)">
@@ -83,6 +86,8 @@
 
 <script>
 import ConfirmDialogVue from './ConfirmDialog.vue'
+// eslint-disable-next-line no-unused-vars
+import AdminPanelTable from "@/components/AdminPanelTable.vue";
 import store from "../store/index"
 export default {
     data() {
@@ -99,23 +104,16 @@ export default {
             helps: [],
         }
     },
-    created() {
-        // получение списка сообщений
-        store.dispatch('getAllMessageAction').then(() => {
-            this.helps = store.getters.getAllHelpMessage;
-        })
-        //
-    },
     beforeMount() {
         // получение списка пользователей
         store.dispatch('getUsersAction').then(() => {
             this.users = store.getters.getUsers;
         })
 
-
-    },
-    mounted() {
-
+        // получение списка пользователей
+        store.dispatch('getAllMessageAction').then(() => {
+            this.helps = store.getters.getAllHelpMessage;
+        })
 
     },
     methods: {
@@ -131,7 +129,7 @@ export default {
             }, 2000)
         },
         changeUser(user) {
-            if (this.changeMode[this.users.indexOf(user)] == 1) {
+            if (this.changeMode[this.users.indexOf(user)]) {
                 store.dispatch('updateUserAction', user).then(() => {
                     this.alertMessage = "Пользователь обновлен"
                     this.isActiveAlert = true
@@ -155,10 +153,21 @@ export default {
             store.dispatch('getUsersAction').then(() => {
                 this.users = store.getters.getUsers
             })
+        },
+        deleteHelpMessage(message){
+            store.dispatch('deleteMessageAction', message).then(()=>{
+                this.alertMessage = "Сообщение удалено"
+                this.isActiveAlert = true
+                this.helps = store.getters.getAllHelpMessage;
+            })
+            setTimeout(() => {
+                this.isActiveAlert = false
+            }, 2000)
         }
     },
     components: {
         ConfirmDialogVue,
+        //AdminPanelTable,
     },
 
 
@@ -171,8 +180,7 @@ export default {
     width: 100%;
     margin-bottom: 20px;
     border: 5px solid #fff;
-    border-top: 5px solid #fff;
-    border-bottom: 3px solid #fff;
+    border-bottom-width: 3px;
     border-collapse: collapse;
     outline: 3px solid #37c748;
     font-size: 15px;
@@ -182,8 +190,7 @@ export default {
 .table div.table-header {
 
     font-weight: bold;
-    padding: 7px;
-    padding-left: 20px;
+    padding: 7px 7px 7px 20px;
     background: #37c748;
     border: none;
     text-align: left;
@@ -199,7 +206,6 @@ export default {
 
 .table input[type='text'] {
     outline: none;
-    size: auto;
     margin-left: 7px;
 }
 
@@ -241,7 +247,7 @@ export default {
 
 .alert_window {
     display: block;
-    position: absolute;
+    position: fixed;
     padding: 10px;
     width: auto;
     left: 40%;
@@ -268,4 +274,24 @@ export default {
         transform: translateY(0);
     }
 }
+
+.table-row-helps{
+    margin: 0 5px;
+}
+.table-row-helps:hover{
+    outline: 1px solid RGB(170,170,170);
+    background-color: RGB(240,240,240);
+    border-radius: 5px;
+    cursor: pointer;
+}
+.table-row-helps:nth-child(even) {
+    background: #f8f8f8 !important;
+}
+.table-data{
+    position: relative;
+}
+.table-data .btn{
+    float: right;
+}
+
 </style>

@@ -1,6 +1,6 @@
 const db = require("../models");
 const User = db.user;
-const htmp = require("../htmlTemplates")
+const html = require("../htmlTemplates")
 const sm = require("../mail.sender")
 const md5 = require('md5')
 
@@ -12,13 +12,13 @@ exports.LogIn = (req, res) => {
             email: req.body.email
         }
     }).then(function (user) {
-        if (user.length == 0) {
+        if (user.length === 0) {
             res.json({ success: false, statusCode: 403, message: 'Пользователь с таким логином не найден' });
         } else {
-            if (!(user[0].password == req.body.password)) {
+            if (!(user[0].password === req.body.password)) {
                 res.json({ success: false, statusCode: 403, message: 'Неверный пароль' });
             } else {
-                if (user[0].active == "0") {
+                if (user[0].active === "0") {
                     res.json({ success: true, statusCode: 201, message: 'Ваша учетная запись не подтверждена.' },);
                 } else {
                     res.json({ success: true, statusCode: 200, message: 'Авторизация прошла успешно' },);
@@ -39,14 +39,14 @@ exports.EmailConfirm = (req, res) => {
             email: req.query.email
         }
     }).then(function (user) {
-        if (user[0].token == req.query.token) {
+        if (user[0].token === req.query.token) {
             User.update(
                 { active: 1 },
                 { where: { email: req.query.email } }
             ).then(res => {
                 console.log(res)
             });
-            res.end(htmp.accountConfirm());
+            res.end(html.accountConfirm());
         } else {
             res.json({ mes: "Проблема с токеном авторизации. Обратитесь в поддержку" })
         }
@@ -61,10 +61,10 @@ exports.EmailConfirm = (req, res) => {
 exports.ChangePasswordSendToEmail = (req, res) => {
 
     const newPass = generatePassword()
-    const hashPssword = md5(newPass);
+    const hashPassword = md5(newPass);
 
     User.update(
-        { password: hashPssword },
+        { password: hashPassword },
         { where: { email: req.body.email } }
     ).then(result => {
 

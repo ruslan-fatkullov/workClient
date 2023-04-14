@@ -1,11 +1,8 @@
-//import config from "@/config"
-
 import config from "@/config"
 import router from "@/router/router"
 import axios from "axios"
 import md5 from "md5";
 
-//import axios from "axios"
 export default {
     state: {
         authUser: {},
@@ -21,15 +18,15 @@ export default {
             user.password = md5(user.password);
             await axios.post(config.SERVER_HOST + "/api/login", user).then((res) => {
                 context.commit('setLoginResultMessage', res.data.message)
-                if (res.data.statusCode == 200) {
+                if (res.data.statusCode === 200) {
                     context.commit('loginSuccess')
                     context.commit('setAuthUser', user)
                     localStorage.setItem('email', user.email);
                     localStorage.setItem('password', user.password)
-                    router.push({ path: '/' })
+                    router.push({path: '/'})
                     return
                 }
-                if (res.data.statusCode == 201) {
+                if (res.data.statusCode === 201) {
                     context.commit('loginNotConfirmed')
                     return
                 }
@@ -39,12 +36,12 @@ export default {
             })
         },
         async registerUser(context, user) {
-            
+
             if (user.password_confirmation !== user.password) {
                 context.commit("setRegResultMessage", "Пароли не совпадают")
                 return;
             }
-            if (user.firstName == '' || user.lastName == '' || user.email == '' || user.password == '' || user.password_confirmation == '') {
+            if (user.firstName === '' || user.lastName === '' || user.email === '' || user.password === '' || user.password_confirmation === '') {
                 context.commit("setRegResultMessage", "Заполните все поля")
                 return;
             }
@@ -53,19 +50,11 @@ export default {
             context.commit("setRegUser", user)
             axios.post(config.SERVER_HOST + "/api/signUp", user).then((res) => {
                 context.commit('setRegResultMessage', res.data.message)
-                if (res.data.statusCode == 200) {
+                if (res.data.statusCode === 200) {
                     router.push("/login")
                 }
             })
 
-        },
-        async sendEmailConfirm(email) {
-            console.log(email)
-            axios.post(config.SERVER_HOST + "/api/sendLinkToMail", { params: { email: email } }).then(() => {
-
-            }).catch((err) => {
-                console.log(err)
-            })
         }
     },
     mutations: {

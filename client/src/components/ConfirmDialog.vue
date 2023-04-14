@@ -40,7 +40,7 @@ export default {
 }
 
 .dialog-window {
-    box-shadow: 0px 0px 0px 9999px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5);
     position: absolute;
     display: block;
     margin: auto;

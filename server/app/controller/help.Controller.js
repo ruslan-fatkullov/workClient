@@ -3,9 +3,9 @@ const Help = db.help
 
 exports.GetAllMessage = (req, res) => {
     Help.findAll().then(function (helpMessage) {
-        res.json({ helpList: helpMessage })
+        res.json({helpList: helpMessage})
     }).catch(err => {
-        console.log("Ошибка в получении списка сообщений" + err)
+        res.json({statusCode: 400, message: "Ошибка в получении списка сообщений"})
     })
 }
 
@@ -16,10 +16,25 @@ exports.CreateHelpMessage = (req, res) => {
             fullName: req.body.fullName,
             message: req.body.message
         }
+    ).then(function () {
+        res.json({statusCode: 200, message: "Сообщение отправлено в техническую поддержку"})
+    }).catch(err => {
+        res.json({statusCode: 400, message: "Не удалось отправить сообщение в техподдержку"})
+    })
+}
+
+exports.DeleteHelpMessage = (req, res) => {
+    console.log(req.body)
+    Help.destroy(
+        {
+            where:{
+                id: req.body.id
+            }
+        },
 
     ).then(function () {
-        res.json({ message: "Сообщение отправлено в техническую поддержку" })
+        res.json({statusCode: 200, message: "Сообщение удалено"})
     }).catch(err => {
-        console.log("Ошибка в отправке сообщения" + err)
+        res.json({statusCode: 400, message: "Не удалось удалить сообщение "+err})
     })
 }

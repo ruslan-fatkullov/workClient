@@ -1,7 +1,7 @@
 const db = require("../models/");
 const User = db.user;
 
-const crypto = require("crypto")
+const crypto= require("crypto")
 const sm = require("../mail.sender")
 
 exports.signUp = (req, res) => {
