@@ -43,10 +43,13 @@
 
         </div>
     </div>
+    <AlertWidowVue v-if="isAlert" v-bind:alertMessage="alertMess"></AlertWidowVue>
 </template>
 
 <script>
+import AlertWidowVue from '../elements/AlertWidow.vue'
 import store from '../store'
+
 
 export default {
     data() {
@@ -55,6 +58,9 @@ export default {
             email: "",
             fullName: "",
             message: "",
+
+            alertMess:"",
+            isAlert: false
         }
     },
     methods: {
@@ -64,6 +70,17 @@ export default {
                 email: this.email,
                 fullName: this.fullName,
                 message: this.message
+            }).then(()=>{
+                this.email = "";
+                this.fullName = "";
+                this.message = "";
+                
+                this.alertMess = "Сообщение отправлено в поддержку"
+                this.isAlert = true
+                setTimeout(()=>{
+                    this.isAlert = false
+                },2000)
+
             })
         },
         computedFields() {
@@ -84,6 +101,12 @@ export default {
         fullName() {
             this.computedFields()
         }
+    },
+    mounted(){
+        store.dispatch('setLinkListAction', [{label: "Главная", link:"/"}, {label: "Техническая поддержка", link:"/techSupport"}])
+    },
+    components:{
+        AlertWidowVue
     }
 }
 </script>
@@ -107,8 +130,8 @@ export default {
 textarea {
     width: 100%;
     height: 50px;
-    padding: 40px;
-    font-size: 28px;
+    padding: 30px;
+    font-size: 20px;
     border-radius: 5px;
     border: none;
     outline: none;
@@ -120,7 +143,7 @@ textarea {
 
 .form-group .btn {
     width: 100%;
-    padding: 25px 0;
+    padding: 15px 0;
     font-size: 35px;
 }
 </style>

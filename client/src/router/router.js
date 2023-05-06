@@ -5,7 +5,7 @@ const routes = [
   {
     path: '/login',
     name: 'UserAuth',
-    component: () => import('../components/UserAuth.vue')
+    component: () => import('../components/AuthentificationComponents/UserAuth.vue')
   },
   {
     path: '/forgotPassword',
@@ -15,13 +15,13 @@ const routes = [
   {
     path: '/registration',
     name: 'UserSignUp',
-    component: () => import('../components/UserSignUp.vue')
+    component: () => import('../components/AuthentificationComponents/UserSignUp.vue')
   },
 
   {
     path: '/about',
     name: 'AboutPage',
-    component: () => import('../components/AboutPage.vue')
+    component: () => import('../pages/AboutPage.vue')
   },
   {
     path: '/changePassword',
@@ -31,18 +31,23 @@ const routes = [
   {
     path: '/',
     name: 'MainPage',
-    component: () => import('../components/MainPage.vue')
+    component: () => import('../pages/MainPage.vue')
   },
   {
     path: '/adminPanel',
     name: 'AdminPanel',
-    component: () => import('../components/AdminPanelPage.vue')
+    component: () => import('../pages/AdminPanelPage.vue')
   },
   {
     path: '/techSupport',
     name: 'TechnicalSupportPage',
-    component: () => import('../components/TechnicalSupportPage.vue')
-  }
+    component: () => import('../pages/TechnicalSupportPage.vue')
+  },
+  {
+    path: '/downloadProjects',
+    name: 'DownloadProjectsPage',
+    component: () => import('../pages/DownloadProjectsPage.vue')
+  },
 ]
 
 const router = createRouter({

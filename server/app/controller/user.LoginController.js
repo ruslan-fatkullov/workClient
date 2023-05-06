@@ -18,7 +18,7 @@ exports.LogIn = (req, res) => {
             if (!(user[0].password === req.body.password)) {
                 res.json({ success: false, statusCode: 403, message: 'Неверный пароль' });
             } else {
-                if (user[0].active === "0") {
+                if (user[0].active === 0) {
                     res.json({ success: true, statusCode: 201, message: 'Ваша учетная запись не подтверждена.' },);
                 } else {
                     res.json({ success: true, statusCode: 200, message: 'Авторизация прошла успешно' },);

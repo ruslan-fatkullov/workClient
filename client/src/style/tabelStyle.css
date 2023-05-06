@@ -1,0 +1,48 @@
+.table {
+    font-family: 'Rostelecom Basic Light', Helvetica, Arial, sans-serif;
+    width: 100%;
+    border: 5px solid #fff;
+    outline: 3px solid #37c748;
+    background: #fff !important;
+}
+
+.table div.table-header {
+
+    font-weight: bold;
+    padding: 7px 7px 7px 20px;
+    background: #37c748;
+    border: none;
+    text-align: left;
+}
+
+.table div.table-body {
+    padding: 7px;
+    border: none;
+    text-align: left;
+}
+
+.table input[type='text'] {
+    outline: none;
+    margin-left: 7px;
+}
+
+
+.table input[type='checkbox']:hover {
+    cursor: pointer;
+}
+
+.table input[type='checkbox'] {
+    margin-left: 25%;
+    content: "";
+    display: block;
+    width: 26px;
+    height: 26px;
+    border: 20px solid #555555;
+    border-radius: 50%;
+    background-color: white;
+}
+
+.table div.table-body .table-row:nth-child(even) {
+    background: #efe8e8 !important;
+}
+

@@ -3,8 +3,7 @@
 </template>
 
 <script>
-import MainWrap from './components/MainWrap.vue';
-require('bootstrap');
+import MainWrap from './pages/MainWrap.vue';
 export default {
   components:{
     MainWrap,
@@ -23,16 +22,11 @@ export default {
   margin: 0;
 }
 
-nav {
-  padding: 30px;
+@font-face {
+	font-family: 'Rostelecom Basic Light'; 
+	src: local('Rostelecom Basic Light'),url(../public/fonts/rostelecombasis_light.otf); 
 }
 
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
 
-nav a.router-link-exact-active {
-  color: #42b983;
-}
+
 </style>

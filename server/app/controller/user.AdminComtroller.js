@@ -1,5 +1,7 @@
 const db = require("../models")
 const User = db.user
+const deletedUser = db.deletedUser
+
 exports.GetAllUser = (req, res) => {
     User.findAll().then(function (user) {
         res.json({ users: user })
@@ -9,14 +11,29 @@ exports.GetAllUser = (req, res) => {
 }
 
 exports.DeleteUserById = (req, res) => {
-    User.destroy({
+    User.findOne({
         where: {
             id: req.query.id
         }
-    }).then(function () {
-        res.json({ message: "Пользователь удален" })
-    }).catch(err => {
-        console.log("Ошибка при удалении" + err)
+    }).then((result) => {
+        deletedUser.create({
+            firstName: result.dataValues.firstName,
+            lastName: result.dataValues.lastName,
+            email: result.dataValues.email,
+            password: result.dataValues.password,
+            active: result.dataValues.active,
+            token: result.dataValues.token
+        }).then(function () {
+            User.destroy({
+                where: {
+                    id: req.query.id
+                }
+            }).then(function () {
+                res.json({ message: "Пользователь удален" })
+            }).catch(err => {
+                console.log("Ошибка при удалении" + err)
+            })
+        });
     })
 }
 

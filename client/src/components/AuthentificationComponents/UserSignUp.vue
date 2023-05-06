@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import store from "../store";
+import store from "../../store/index";
 export default {
     data() {
         return {
@@ -125,7 +125,7 @@ export default {
 .register-form {
     position: relative;
     max-width: 400px;
-    margin: 0 auto;
+    margin: 20px auto;
     padding: 20px;
     border: 1px solid #f2f2f2;
     border-radius: 5px;

@@ -6,36 +6,36 @@
                 <div class="preloader__item"></div>
             </div>
         </div>
-        <h1>Главная</h1>
-        <p style="font-size: 24px;">сгенерируй осмысленный текст, не содержащий грамматических ошибок.
-            Выбери из списка одну букву и напиши слово, которое будет начинаться на эту букву.
-            Не используй в слове букву, которая уже есть в списке.
-            Если слово начинается на одну из букв, то можно использовать любую другую букву.
-            Например: В слове "охота" нельзя использовать буквы "а" и "о". В случае, если в слове есть буква "в", то
-            нельзя использовать ни "а", ни "о", потому что это две разные буквы.
-            В списке есть только одна буква "г".
-            Напиши слово "га"</p>
+        <div class="container">
 
+            <h1>Добро Пожаловать, {{ fullName }}</h1>
+
+            <div @click="toDownLoad()" class="main_button">Скачать проекты</div>
+          
+        </div>
     </div>
 </template>
 
 <script>
 import router from '../router/router'
-import axios from 'axios'
-import config from '../config'
+/*import axios from 'axios'
+import config from '../config'*/
+import store from '../store'
 
 
 export default {
     data() {
         return {
-            loadPage: true
+            loadPage: false
         }
     },
     beforeCreate() {
-        const em = localStorage.getItem("email")
+        store.dispatch("setLinkListAction", [])
+
+        /*const em = localStorage.getItem("email")
         const ps = localStorage.getItem("password")
         if (em == null || ps == null) {
-            router.push({path: "/login"})
+            router.push({ path: "/login" })
             return
         }
         const newUser = {
@@ -47,16 +47,27 @@ export default {
                 this.loadPage = false
                 return
             }
-            router.push({path: "/login"})
+            router.push({ path: "/login" })
         }).catch((err) => {
             console.log(err)
-        })
+        })*/
+    },
+    methods: {
+        toDownLoad() {
+            router.push('/downloadProjects')
+        }
+    },
+    computed: {
+        fullName() {
+            return `${store.getters.getAuthUserInfo.firstName}`
+        }
     },
 }
 </script>
 
 <style>
 .main-page {
+    font-family: 'Rostelecom Basic Light', Helvetica, Arial, sans-serif;
     background-color: #212529;
     color: #e0e0e0;
 }
@@ -127,4 +138,15 @@ export default {
 
 .loaded .preloader {
     display: none;
-}</style>
+}
+
+
+
+.download-projects-button {
+    width: 300px;
+}
+
+.download-projects-button:hover {
+    cursor: pointer;
+}
+</style>

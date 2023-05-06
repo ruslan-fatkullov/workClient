@@ -1,0 +1,34 @@
+.button{
+    padding: 10px;
+    display: block;
+}
+.white-button{
+    background-color: #ebe4e4;
+    color: rgb(46, 44, 44);
+    margin: 0 5px;
+    font-size: 24px;
+    
+}
+.white-button:hover{
+    color: rgb(46, 44, 44);
+    background-color: #cfc3c3;
+    cursor: pointer;    
+}
+
+.main_button {
+    background-color: #075668;
+    text-transform: uppercase;
+    letter-spacing: normal;
+    font-family: 'Rostelecom Basic Light', Helvetica, Arial, sans-serif;
+    font-size: 22px;
+    transition-duration: 2s ease;
+    padding: 10px 0;
+    text-align: center;
+    overflow-wrap: break-word;
+    
+}
+
+.main_button:hover {
+    background-color: #007aaf;
+    cursor: pointer;
+}

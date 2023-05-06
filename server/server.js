@@ -5,7 +5,6 @@ const cors = require("cors");
 const app = express();
 
 const corsOptions = {
-  origin: "http://localhost:8081"
 };
 
 app.set("view engine", "hbs");
@@ -19,10 +18,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const userRoutes = require("./app/routes/userRoutes.js");
-const helpRoutes = require("./app/routes/helpRoutes.js")
+const helpRoutes = require("./app/routes/helpRoutes.js");
+const launcherRoutes = require("./app/routes/launcherRoutes.js");
+const deletedUsersRoutes = require("./app/routes/deletedUserRoutes.js");
 
 app.use("/api", userRoutes);
-app.use("/help", helpRoutes)
+app.use("/help", helpRoutes);
+app.use("/launcher", launcherRoutes);
+app.use("/deleted", deletedUsersRoutes);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {

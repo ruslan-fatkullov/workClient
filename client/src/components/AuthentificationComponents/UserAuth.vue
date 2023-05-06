@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import store from "../store";
+import store from "../../store/index";
 
 export default {
     data() {
@@ -69,6 +69,8 @@ export default {
                         this.sendEmailAgain = true;
                         this.viewInput = false;
                     }
+                    
+                    store.dispatch("getUserByEmailAction")
                 });
 
         },
@@ -85,11 +87,9 @@ export default {
 
 <style scoped>
 .login-form {
-    position: absolute;
-    width: 400px;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    position: relative;
+    max-width: 400px;
+    margin: 20px auto;
     padding: 20px;
     border: 1px solid #f2f2f2;
     border-radius: 7px;
@@ -127,31 +127,6 @@ export default {
     box-sizing: border-box;
 }
 
-.btn {
-    display: inline-block;
-    padding: 10px 20px;
-    font-size: 16px;
-    font-weight: bold;
-    text-align: center;
-    text-decoration: none;
-    border: 1px solid #4caf50;
-    border-radius: 5px;
-    color: #fff;
-    background-color: #4caf50;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.btn:hover,
-.btn:focus {
-    background-color: #4d8f4f;
-}
-
-.btn-primary {
-    display: block;
-    width: 100%;
-}
-
 .forgot-password {
     display: block;
     margin-top: 20px;
@@ -180,5 +155,8 @@ export default {
 
 .signup-link a:hover {
     text-decoration: underline;
+}
+.btn{
+    width: 100%;
 }
 </style>

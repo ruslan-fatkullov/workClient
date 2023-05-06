@@ -47,10 +47,8 @@ export default {
 
 <style scoped>
 .forgot-pass-from {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    position: relative;
+    margin: 20px auto;
     width: 300px;
     padding: 2rem;
     background-color: #fdf4e3;
