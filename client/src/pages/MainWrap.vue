@@ -1,7 +1,13 @@
 <template>
-    <navBar></navBar>
-    <router-view></router-view>
-    <FooterComponent></FooterComponent>
+    <div class="wrapper">
+        <div class="content">
+            <navBar></navBar>
+            <router-view></router-view>
+        </div>
+        <div class="footer">
+            <FooterComponent></FooterComponent>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -14,9 +20,22 @@ export default {
         navBar,
         FooterComponent,
         //BreadCrumbs
-    }
+    },
 }
 </script>
 
-<style>
+<style scoped>
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
+
+.content {
+    flex: 1 0 auto;
+}
+
+.footer {
+    flex: 0 0 auto;
+}
 </style>

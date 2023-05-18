@@ -1,5 +1,8 @@
 <template>
-    <div class="alert_window">{{ alertMessage }}</div>
+    <div class="wrapper">
+
+        <div class="alert_window">{{ alertMessage }}</div>
+    </div>
 </template>
 
 <script>
@@ -11,17 +14,22 @@ export default {
 </script>
 
 <style>
+.wrapper{
+    width: 100%;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+}
 .alert_window {
     display: block;
     position: fixed;
     padding: 10px;
     width: auto;
-    left: 40%;
     top: 10%;
     border-radius: 20px;
     color: #000;
-    border: 2px solid;
-    background-color: rgb(224, 224, 217);
+    background-color: rgb(220, 220, 220);
+    font-size: 24px;
     animation: slideUp 2s ease infinite;
 }
 
@@ -44,6 +52,11 @@ export default {
     100% {
         opacity: 0;
         transform: translateY(0);
+    }
+}
+@media only screen and (max-width : 900px) {
+    .alert_window{
+        font-size: 16px;
     }
 }
 </style>

@@ -1,36 +1,14 @@
 <template>
     <div class="container slider_wrapper">
-        <div class="carousel-wrapper">
-            <div @click="previous()" class="left"><!-- Стрелка влево -->
-                <svg class="arrow-left-5" viewBox="0 0 154 109">
-                    <symbol id="Arrow" viewBox="-73.9 -55.3 135.9 85.4">
-                        <g>
-                            <polygon points="-73.9,29.1 -6,-9.2 61.9,30.1 61.9,14.2 -6,-25.1 -73.9,14.2 " />
-                        </g>
-                        <g>
-                            <polygon points="-73.9,-1 -6,-39.3 61.9,0 61.9,-16 -6,-55.3 -73.9,-16 " />
-                        </g>
-                    </symbol>
-                    <use xlink:href="#Arrow" width="135.9" height="85.4" id="XMLID_1_" x="-73.9" y="-55.3"
-                        transform="matrix(1.007 0 0 -1.007 83.0005 42)" />
-                </svg>
+        <div ref="carousel_wrapper" class="carousel-wrapper">
+            <div @click="previous()" class="left">
+            </div>
+            <div class="image_center" @click="large_image()">
+
             </div>
             <img class="slider_image slide" v-for="(image, index) in images" :key="image"
                 :class="{ 'active_image': isActive(index) }" :src="image.src" alt="">
             <div @click="next()" class="right">
-                <!-- Стрелка вправо -->
-                <svg class="arrow-right-5" viewBox="0 0 154 109">
-                    <symbol id="Arrow" viewBox="-73.9 -55.3 135.9 85.4">
-                        <g>
-                            <polygon points="-73.9,29.1 -6,-9.2 61.9,30.1 61.9,14.2 -6,-25.1 -73.9,14.2 " />
-                        </g>
-                        <g>
-                            <polygon points="-73.9,-1 -6,-39.3 61.9,0 61.9,-16 -6,-55.3 -73.9,-16 " />
-                        </g>
-                    </symbol>
-                    <use xlink:href="#Arrow" width="135.9" height="85.4" id="XMLID_1_" x="-73.9" y="-55.3"
-                        transform="matrix(1.007 0 0 -1.007 83.0005 42)" />
-                </svg>
             </div>
         </div>
 
@@ -84,6 +62,8 @@ export default {
                 this.currentIndex = this.images.length - 1
             }
         },
+        large_image(){
+        }
     }
 }
 </script>
@@ -142,11 +122,18 @@ export default {
 
 
 
+
+.image_center{
+    position: absolute;
+    left: 30%;
+    height: 100%;
+    width: 40%;
+}
 .left {
     position: absolute;
     left: 0;
     height: 100%;
-    width: 50%;
+    width: 30%;
 }
 
 .left svg {
@@ -165,7 +152,7 @@ export default {
     position: absolute;
     right: 0;
     height: 100%;
-    width: 50%;
+    width: 30%;
 }
 
 .right svg {
@@ -250,10 +237,12 @@ export default {
     margin-bottom: 0.4rem;
     outline: 0.1rem solid rgb(255, 255, 255);
     border-radius: 1%;
+    opacity: .25;
 }
 
 .active_tumb {
-    outline: 0.2rem solid rgb(66, 129, 45);
+    outline: 0.1rem solid rgb(255, 255, 255);
+    opacity: 1;
 }
 
 .tumb:last-child {
@@ -264,13 +253,14 @@ export default {
     height: 100%;
     border-radius: 1%;
     width: 100%;
+    user-select: none;
 }
 
 .tumb:hover {
     cursor: pointer;
 }
 
-@media only screen and (max-width : 1000px) {
+@media only screen and (max-width : 900px) {
     .slider_wrapper {
         padding: 0 1.5rem;
         display: block;
@@ -279,7 +269,7 @@ export default {
     .tumb_group {
         display: flex;
         width: 100%;
-        margin: 2rem 0;
+        margin: 0.8rem 0;
         justify-content: space-between;
     }
 

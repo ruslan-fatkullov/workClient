@@ -70,6 +70,7 @@ export default {
     left: 50%;
     width: 25%;
     padding: 20px;
+    z-index: 9999;
     background-color: #f2f2f2;
     border-radius: 5px;
 }

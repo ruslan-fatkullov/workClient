@@ -5,19 +5,13 @@ const routes = [
   {
     path: '/login',
     name: 'UserAuth',
-    component: () => import('../components/AuthentificationComponents/UserAuth.vue')
+    component: () => import('../components/UserAuth.vue')
   },
   {
     path: '/forgotPassword',
     name: 'ForgotPassword',
     component: () => import('../components/ForgotPasswordComponent.vue')
   },
-  {
-    path: '/registration',
-    name: 'UserSignUp',
-    component: () => import('../components/AuthentificationComponents/UserSignUp.vue')
-  },
-
   {
     path: '/about',
     name: 'AboutPage',

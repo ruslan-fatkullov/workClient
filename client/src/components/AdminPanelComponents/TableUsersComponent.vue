@@ -59,7 +59,7 @@
 
 <script>
 import store from "../../store/index"
-import ConfirmDialogVue from "../ConfirmDialog.vue"
+import ConfirmDialogVue from "../../elements/ConfirmDialog.vue"
 import AlertWindowVue from "../../elements/AlertWidow.vue"
 export default {
     data() {

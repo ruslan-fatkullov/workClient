@@ -1,45 +1,47 @@
 <template>
     <div class="tech-support">
-        <h1>Техническая поддержка</h1>
+        <h1>Заявка в техническую поддержку</h1>
         <div class="container form-tech-support">
-            <form @submit.prevent="sendMessage()">
+            <div class="row justify-content-center">
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="email">Введите ваш email</label>
-                            <input v-model=email type="text" placeholder="Введите адресс электронной почты" id="email">
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="fullName">Ваши ФИО</label>
-                            <input v-model=fullName type="text" placeholder="Как к вам можно обращаться?" id="fullName">
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <textarea v-model=message
-                                      placeholder="Подробно опишите вашу проблему" id="message"
-                                      cols="30"
-                                      rows="100"></textarea>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
+                <div class="col-lg-8">
+                    <form @submit.prevent="sendMessage()">
 
-                        <div class="form-group">
-                            <button type="submit"
-                                    class="btn btn-primary send-help-button"
-                                    v-bind:disabled="!isDisable">Отправить
-                            </button>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="email">Введите ваш email</label>
+                                    <input v-model=email type="text" placeholder="Введите адресс электронной почты"
+                                        id="email">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="fullName">Ваши ФИО</label>
+                                    <input v-model=fullName type="text" placeholder="Как к вам можно обращаться?"
+                                        id="fullName">
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group message_field">
+                                    <textarea cols="40" rows="3" v-model=message
+                                        placeholder="Подробно опишите вашу проблему" id="message"></textarea>
+                                    <div class="button_wrap">
+                                        <button type="submit" class="sendHELP"
+                                            v-bind:disabled="!isDisable">Отправить</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
                 </div>
-            </form>
+            </div>
+
+
 
         </div>
     </div>
@@ -59,7 +61,7 @@ export default {
             fullName: "",
             message: "",
 
-            alertMess:"",
+            alertMess: "",
             isAlert: false
         }
     },
@@ -70,16 +72,16 @@ export default {
                 email: this.email,
                 fullName: this.fullName,
                 message: this.message
-            }).then(()=>{
+            }).then(() => {
                 this.email = "";
                 this.fullName = "";
                 this.message = "";
-                
+
                 this.alertMess = "Сообщение отправлено в поддержку"
                 this.isAlert = true
-                setTimeout(()=>{
+                setTimeout(() => {
                     this.isAlert = false
-                },2000)
+                }, 2000)
 
             })
         },
@@ -102,16 +104,55 @@ export default {
             this.computedFields()
         }
     },
-    mounted(){
-        store.dispatch('setLinkListAction', [{label: "Главная", link:"/"}, {label: "Техническая поддержка", link:"/techSupport"}])
+    mounted() {
+        store.dispatch('setLinkListAction', [{ label: "Главная", link: "/" }, { label: "Техническая поддержка", link: "/techSupport" }])
     },
-    components:{
+    components: {
         AlertWidowVue
     }
 }
 </script>
 
 <style scoped>
+.sendHELP {
+    font-size: 1.4rem;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px 0 5px 0;
+    background-color: #007aaf;
+    color: #fff;
+}
+.button_wrap{
+    display: flex;
+    justify-content: end;
+}
+
+.sendHELP:disabled:hover {
+    background-color: #007aaf;
+    opacity: .6;
+}
+
+.sendHELP:disabled {
+    opacity: .6;
+}
+
+.sendHELP:hover {
+    background-color: #0092d1;
+}
+
+.message_field {
+    display: block;
+    background-color: #fff;
+    border-radius: 5px;
+
+
+}
+
+.message_field input[type="text"] {
+    height: 500px;
+    word-break: break-word;
+}
+
 .tech-support {
     color: aliceblue;
 }
@@ -145,5 +186,9 @@ textarea {
     width: 100%;
     padding: 15px 0;
     font-size: 35px;
+}
+
+.form-tech-support {
+    padding: 0 15px;
 }
 </style>

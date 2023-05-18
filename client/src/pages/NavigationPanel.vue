@@ -1,29 +1,40 @@
 <template>
-    <div class="top_bar">
-        <div class="container">
+    <div @click="openMenu()" class="wrapper" ref="wrapper"></div>
+    <div ref="plug" class="plug"></div>
+    <div @click.stop="" ref="top_bar" class="top_bar">
+        <div class="container nav-panel-wrapper">
             <div class="nav-panel">
-                <div class="site-logo"><img src="../assets/logo-menu.png" alt=""></div>
+                <div class="logo-burger-group">
+                    <div class="site-logo"><router-link to="/"><img src="../assets/logo-menu.png" alt=""></router-link>
+                    </div>
 
-                <div class="hamburger_icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                        <path
-                            d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z" />
-                    </svg>
+                    <div @click="openMenu()" class="hamburger_icon">
+                        <span ref="hamburger_item" class="hamburger_item"></span>
+                    </div>
                 </div>
-                <ul class="nav">
+
+                <ul ref="nav" class="nav">
                     <li class="nav-item">
                         <div class="">
-                            <router-link class="nav-link" to="/">Главная</router-link>
+                            <router-link @click="openMenu()" class="nav-link" to="/">Главная</router-link>
                         </div>
                     </li>
                     <li class="nav-item">
                         <div class="">
-                            <router-link class="nav-link" to="/techSupport">Техническая поддержка</router-link>
+                            <a @click="openMenu()" class="nav-link" href="">Сайт компании</a>
                         </div>
                     </li>
+                    <li class="nav-item">
+                        <div class="">
+                            <router-link @click="openMenu()" class="nav-link" to="/techSupport">Техническая
+                                поддержка</router-link>
+                        </div>
+                    </li>
+
                     <li v-if="isAuth" class="nav-item">
                         <div class="">
-                            <router-link class="nav-link" to="/adminPanel">Панель администрирования</router-link>
+                            <router-link @click="openMenu()" class="nav-link" to="/adminPanel">Панель
+                                администрирования</router-link>
                         </div>
                     </li>
                     <li v-if="isAuth" class="nav-item">
@@ -72,7 +83,7 @@
 </template>
 
 <script>
-import ConfirmDialogVue from '../components/ConfirmDialog.vue'
+import ConfirmDialogVue from '../elements/ConfirmDialog.vue'
 import router from '../router/router'
 import store from '../store'
 
@@ -81,21 +92,58 @@ import store from '../store'
 export default {
     data() {
         return {
-            showDialog: false
+            showDialog: false,
+            showNavigation: false,
         }
+    },
+    created() {
+        window.addEventListener('scroll', this.handleScroll);
     },
     mounted() {
         store.dispatch("setAuthBoolAction")
         store.dispatch("getUserByEmailAction")
     },
+    unmounted() {
+        window.removeEventListener('scroll', this.handleScroll);
+    },
     methods: {
+        handleScroll() {
+            let screenHeight = window.screen.height
+            let navHeight = screenHeight / 100 * 8
+            if (window.scrollY > navHeight) {
+                this.$refs.top_bar.classList.add("fixed_navigation")
+                this.$refs.plug.classList.add("plug-visible")
+            } else {
+                this.$refs.top_bar.classList.remove("fixed_navigation")
+                this.$refs.plug.classList.remove("plug-visible")
+            }
+        },
         toProfile() {
+            this.openMenu()
             router.push("/about")
         },
         logout() {
+            this.openMenu()
             this.showDialog = false
             store.dispatch("logoutUser")
         },
+        openMenu() {
+            this.showNavigation = !this.showNavigation
+            if (this.showNavigation) {
+
+                this.$refs.hamburger_item.classList.add("hamburger_rotate")
+                this.$refs.wrapper.classList.add("nav_active_wrapper")
+                this.$refs.nav.classList.add("nav_active")
+                return
+            }
+            this.$refs.hamburger_item.classList.remove("hamburger_rotate")
+            this.$refs.wrapper.classList.remove("nav_active_wrapper")
+            this.$refs.nav.classList.remove("nav_active")
+
+        },
+        asd() {
+            alert("DSa")
+        }
     },
     computed: {
         computeFullname() {
@@ -112,10 +160,39 @@ export default {
 }
 </script>
 
-<style >
+<style scoped>
+.plug {
+    height: 8vh;
+    display: none;
+}
+
+.plug-visible {
+    display: block;
+}
+
 .top_bar {
     background-color: #fff;
+    width: 100%;
+    position: relative;
     z-index: 9999;
+    height: 8vh;
+}
+
+.fixed_navigation {
+    position: fixed;
+    opacity: .98;
+    top: 0;
+    animation: fixed_menu .3s linear;
+}
+
+@keyframes fixed_menu {
+    0% {
+        transform: translateY(-100px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
 }
 
 .site-logo {
@@ -124,16 +201,17 @@ export default {
 }
 
 .site-logo img {
-    width: 150px;
+    height: 100%;
 }
 
 .nav-panel {
     background-color: #ffffff;
     display: flex;
+    height: 8vh;
 }
 
 .nav {
-    padding: 15px 0;
+    display: flex;
     margin-left: auto;
 }
 
@@ -142,6 +220,7 @@ export default {
 }
 
 .nav-link {
+    user-select: none;
     font-family: 'Rostelecom Basic Light', Helvetica, Arial, sans-serif;
     position: relative;
     font-size: 14px;
@@ -160,6 +239,7 @@ export default {
     border: 1px solid;
     border-radius: 5px;
     width: auto;
+    user-select: none;
 }
 
 .nav-link:after {
@@ -211,6 +291,8 @@ export default {
     position: absolute;
     display: none;
     width: 100%;
+    user-select: none;
+    box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
 }
 
 .list-item {
@@ -233,25 +315,134 @@ export default {
     display: none;
 }
 
-@media only screen and (max-width : 1200px) {
+.logo-burger-group {
+    display: flex;
+}
+
+@media only screen and (max-width : 900px) {
+
     .nav-panel {
         display: block;
+        height: auto;
+        position: relative;
+
+    }
+
+    .top_bar {
+
+        height: auto;
+        z-index: 99;
+    }
+
+    .site-logo img {
+        width: 150px;
     }
 
     .nav {
+        display: none;
+        background-color: #f5f5f5;
+        padding: 30px;
+        border-radius: 0 0 10px 10px;
+        position: absolute;
+        z-index: -1;
+        right: 0;
+        animation: slide-down .5s;
+    }
+
+    @keyframes slide-down {
+        0% {
+            transform: translateY(-300px);
+        }
+
+        100% {
+            transform: translateY(0px);
+
+        }
+    }
+
+    .nav_active {
         display: block;
+    }
+
+    .nav_active_wrapper {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 98;
+        background-color: rgba(0, 0, 0, .7);
     }
 
     .nav-item {
-
+        border-bottom: 1px solid rgb(92, 92, 92);
+        padding: 5px 0;
     }
+
 
     .hamburger_icon {
         margin-left: auto;
+        margin-top: auto;
         margin-right: 20px;
-        width: 20px;
-        height: 20px;
+        width: 25px;
+        height: 25px;
         display: block;
-        color: black;
+        position: relative;
     }
-}</style>
+
+    .hamburger_icon:hover {
+        cursor: pointer;
+    }
+
+    .hamburger_item {
+        display: block;
+        position: relative;
+        content: '';
+        width: 25px;
+        height: 3px;
+        background-color: rgb(82, 82, 82);
+        border-radius: 4px;
+        margin: auto auto;
+        transition-property: transform;
+        transition-duration: 250ms;
+        transition-timing-function: ease;
+    }
+
+    .hamburger_item::before {
+        position: absolute;
+        display: block;
+        width: 25px;
+        content: '';
+        height: 3px;
+        background-color: rgb(82, 82, 82);
+        border-radius: 4px;
+        transform: translateY(-8px);
+    }
+
+    .hamburger_item::after {
+        position: absolute;
+        display: block;
+        content: '';
+        width: 25px;
+        height: 3px;
+        background-color: rgb(82, 82, 82);
+        border-radius: 4px;
+        transform: translateY(8px);
+    }
+
+    .hamburger_rotate {
+        transform: rotate(-45deg);
+    }
+
+    .hamburger_rotate::before {
+        transform: rotate(90deg);
+    }
+
+    .hamburger_rotate::after {
+        display: none;
+    }
+
+    .wrapper {}
+
+}
+</style>

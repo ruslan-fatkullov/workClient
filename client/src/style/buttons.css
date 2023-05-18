@@ -17,6 +17,7 @@
 
 .main_button {
     background-color: #075668;
+    color: #fff;
     text-transform: uppercase;
     letter-spacing: normal;
     font-family: 'Rostelecom Basic Light', Helvetica, Arial, sans-serif;
@@ -25,6 +26,7 @@
     padding: 10px 0;
     text-align: center;
     overflow-wrap: break-word;
+    user-select: none;
     
 }
 

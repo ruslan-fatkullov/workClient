@@ -16,7 +16,14 @@ export default {
         regResultMessage: ""
     },
     actions: {
-        
+        // отправка ссылки на подтверждение email
+        async sendEmailConfirmLink(context, user){
+            await axios.post(config.SERVER_HOST + "/api/sendLinkToMail", user).then((res)=>{
+                context.commit('setLoginResultMessage', res.data.message)
+                console.log(res.data.message)
+            })
+        },
+        // авторизация
         async loginUser(context, user) {
             context.commit('loginRequest')
             user.password = md5(user.password);
@@ -25,11 +32,8 @@ export default {
                 if (res.data.statusCode === 200) {
                     context.commit('loginSuccess')
                     context.commit('setAuthUser', user)
-
                     context.commit('setAuthBool', true)
-
                     localStorage.setItem('email', user.email);
-                    localStorage.setItem('password', user.password)
                     localStorage.setItem('login_status', true)
                     router.push({path: '/'})
                     return
@@ -43,6 +47,7 @@ export default {
                 return err
             })
         },
+        // регистрация
         async registerUser(context, user) {
 
             if (user.password_confirmation !== user.password) {
@@ -58,13 +63,11 @@ export default {
             context.commit("setRegUser", user)
             await axios.post(config.SERVER_HOST + "/api/signUp", user).then((res) => {
                 context.commit('setRegResultMessage', res.data.message)
-                if (res.data.statusCode === 200) {
-                    
-                    router.push("/login")
-                }
+
             })
 
         },
+        // получение пользователя по email
         async getUserByEmailAction(context){
             await axios.get(config.SERVER_HOST + "/api/getUserByEmail", { params: { email: localStorage.getItem("email") } }, {
                 headers: {
@@ -74,6 +77,7 @@ export default {
                 context.commit("setAuthUserInfo", res.data)
             })
         },
+        // выход из профиля
         logoutUser(context){
             localStorage.removeItem("email")
             localStorage.removeItem("password")
@@ -83,6 +87,7 @@ export default {
             context.commit("setAuthBool", false)
             router.push({ path: "/" })
         },
+        // установка статуса авторизации
         setAuthBoolAction(context){
             if(localStorage.getItem("login_status")){
                return context.commit("setAuthBool", true)
