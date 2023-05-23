@@ -19,15 +19,19 @@
             Начать свое знакомство с нашими системами можно уже сейчас!</p>
           <div class="button_download_group">
             <div class="row justify-content-center">
-              <div class="col-lg-6">
+              <div class="col-lg-6 col-md-6">
                 <div class="row">
                   <div class="col-lg-6 col-sm-6 col-6">
-                    <div @click="downloadLauncher()" class="main_button load_launcher_button">Скачать
-                      <span v-if="launcher_downloading" class="launcher_loader"></span>
+                    <div @click="downloadLauncher()" class="main_button load_launcher_button justify-content-center">
+                      <span>Скачать</span>
+                      <div v-if="!launcher_downloading" class="download-logo"></div>
+                      <span v-else class="launcher_loader"></span>
                     </div>
                   </div>
                   <div class="col-lg-6 col-sm-6 col-6">
-                    <div class="main_button">Инструкция</div>
+                    <div @click="openPDF()" class="instruction">
+                      Инструкция
+                    </div>
                   </div>
                 </div>
 
@@ -36,21 +40,24 @@
           </div>
         </div>
 
-
-
-        <div @click="scrollDown()" class="scroll_down">
-          <svg width="48px" height="48px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
-            stroke="#000000">
-            <g id="SVGRepo_bgCarrier" stroke-width="0" />
-            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-            <g id="SVGRepo_iconCarrier">
-              <path d="M19 5L12.7071 11.2929C12.3166 11.6834 11.6834 11.6834 11.2929 11.2929L5 5" stroke="#ffffff"
-                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-              <path d="M19 13L12.7071 19.2929C12.3166 19.6834 11.6834 19.6834 11.2929 19.2929L5 13" stroke="#ffffff"
-                stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-            </g>
-          </svg>
+        <div class="scroll_block">
+          <span>Узнать подробнее</span>
+          <div @click="scrollDown()" class="scroll_down">
+            <svg width="48px" height="48px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+              stroke="#000000">
+              <g id="SVGRepo_bgCarrier" stroke-width="0" />
+              <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+              <g id="SVGRepo_iconCarrier">
+                <path d="M19 5L12.7071 11.2929C12.3166 11.6834 11.6834 11.6834 11.2929 11.2929L5 5" stroke="#ffffff"
+                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M19 13L12.7071 19.2929C12.3166 19.6834 11.6834 19.6834 11.2929 19.2929L5 13" stroke="#ffffff"
+                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </g>
+            </svg>
+          </div>
         </div>
+
+
       </div>
     </div>
 
@@ -79,6 +86,7 @@
 import config from '../config';
 import store from '../store';
 import SliderDownLoadPage from '@/components/SliderDownLoadPage.vue';
+
 
 export default {
   data() {
@@ -117,6 +125,9 @@ export default {
     },
     scrollDown() {
       this.$refs.slider.scrollIntoView({ behavior: 'smooth' });
+    },
+    openPDF(){
+      window.open('./gui.pdf','_blank')
     }
   },
   mounted() {
@@ -178,10 +189,27 @@ export default {
   overflow-x: hidden;
 }
 
+.instruction {
+  position: relative;
+  border: 2px solid #075668;
+  height: 100%;
+  font-size: 22px;
+  font-family: 'Rostelecom Basic Light', Helvetica, Arial, sans-serif;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center
+}
+
+.instruction:hover {
+  cursor: pointer;
+  border: 2px solid #0b8dab;
+}
+
 .description_header_text {
   padding: 5.5rem 0;
   color: white;
-  height: 92vh;
+  height: 90vh;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -205,13 +233,12 @@ export default {
 
 .description_header_background {
   position: absolute;
-  height: 92vh;
+  height: 90vh;
   width: 100%;
   z-index: -99;
   background-image: url('../assets/plane_backgound.png');
   background-color: linear-gradient(180deg, #075668 15%, rgb(212, 212, 212) 100%);
   background-size: cover;
-  /*animation: scrollBg 40s linear forwards infinite;*/
   background-repeat: repeat-x;
   background-repeat: repeat-y;
 }
@@ -233,7 +260,6 @@ export default {
 
 .dowload_wrapper {
   padding: 5rem 0;
-  /*background: linear-gradient(180deg, #075668 15%, rgb(212, 212, 212) 100%);*/
 }
 
 .launcher_description {
@@ -253,13 +279,17 @@ export default {
 }
 
 .load_launcher_button {
+  width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  padding-left: 3.5rem;
+  padding-right: 3.5rem;
+  position: relative;
 }
 
 /*лоадер для лаунчера*/
 .launcher_loader {
-  margin-left: 15px;
+  margin-left: 1rem;
   content: "";
   display: block;
   width: 25px;
@@ -281,7 +311,6 @@ export default {
 }
 
 /*лоадер страницы*/
-
 .preloader {
   position: fixed;
   left: 0;
@@ -290,6 +319,11 @@ export default {
   bottom: 0;
   background: #212529;
   z-index: 1001;
+}
+
+a {
+  color: white;
+  text-decoration: none;
 }
 
 .preloader__row {
@@ -346,6 +380,13 @@ export default {
   display: none;
 }
 
+.download-logo {
+  margin-left: 1rem;
+  width: 25px;
+  height: 25px;
+  background: url("../assets/svg/download-svgrepo-com.svg") 0 0 no-repeat;
+}
+
 @media only screen and (max-width : 2000px) {
   .launcher_description {
     font-size: 1.8rem;
@@ -375,9 +416,10 @@ export default {
     height: auto;
   }
 
-  .scroll_down {
+  .scroll_block {
     display: none;
   }
+
 }
 
 @media only screen and (max-width : 1000px) {
@@ -417,6 +459,19 @@ export default {
   .main_button {
     font-size: 1rem;
   }
+  .instruction {
+    font-size: 1rem;
+  }
+
+
+
+  .download-logo {
+    margin-left: 1rem;
+    width: 20px;
+    height: 20px;
+    color: white;
+    background: url("../assets/svg/download-svgrepo-com.svg") 0 0 no-repeat;
+  }
 }
 
 @media only screen and (max-width : 1300px) {
@@ -424,5 +479,16 @@ export default {
     margin: 0 1rem;
     padding: 1rem 2rem;
   }
-}
-</style>
+
+  .top_desc p {
+    font-size: 1.25rem;
+  }
+
+  .top_desc h1 {
+    font-size: 1.5rem;
+  }
+
+  .scroll_block span {
+    font-size: 1.25rem;
+  }
+}</style>

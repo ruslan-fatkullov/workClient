@@ -14,15 +14,17 @@
             <input v-model="email" type="email" placeholder=" " class="form-control" id="email" name="email"
                 :disabled="isRequest" required />
         </div>
-        <div class="form-group" :class="{ 'active_label_style': password }">
+        <div class="form-group pass" :class="{ 'active_label_style': password }">
             <label for="password">Пароль</label>
-            <input v-model="password" type="password" class="form-control" id="password" name="password"
-                :disabled="isRequest" required />
+            <input v-on:keyup="validate()" v-model="password" type="password" class="form-control" ref="password"
+                id="password" name="password" :disabled="isRequest" required />
+            <div ref="password_control" @click="viewPassword()" class="password-control"></div>
+            <p>{{ passwordTips }}</p>
         </div>
         <div v-if="!isLoginMode" class="form-group" :class="{ 'active_label_style': password_confirmation }">
             <label for="confirm-password">Повторите пароль</label>
-            <input v-model="password_confirmation" type="password" class="form-control" id="confirm-password"
-                name="confirm-password" required>
+            <input v-model="password_confirmation" type="password" class="form-control" ref="password_confirm"
+                id="confirm-password" name="confirm-password" required>
         </div>
         <div class="resultString">
             <p v-if="isActiveResultString">{{ resultString }}</p>
@@ -52,8 +54,6 @@ export default {
     data() {
         return {
             isLoginMode: true,
-
-
             firstName: '',
             lastName: '',
             email: "",
@@ -65,11 +65,21 @@ export default {
             sendEmailAgain: false,
             loading: false,
             isRequest: false,
+
+            isValidPassword: false,
+            passwordTips: ""
         };
     },
     methods: {
         changeMode() {
             this.isLoginMode = !this.isLoginMode
+            this.passwordTips = ""
+            this.resultString = ""
+            this.email = ""
+            this.password = ""
+            this.firstName = ""
+            this.lastName = ""
+            this.password_confirmation = ""
         },
         login() {
             if (this.isLoginMode) {
@@ -99,6 +109,9 @@ export default {
                         store.dispatch("getUserByEmailAction")
                     });
             } else {
+                if (!this.isValidPassword) {
+                    return
+                }
                 this.loading = true
                 store.dispatch("registerUser", {
                     firstName: this.firstName,
@@ -122,9 +135,49 @@ export default {
                 this.resultString = store.getters.getLoginResultMessage;
             })
         },
+        validate() {
+            if (!this.isLoginMode) {
+                this.isValidPassword = false
+                if (this.password.length === 0) {
+                    this.passwordTips = ""
+                    return
+                }
+                let check1 = /^.{8,}$/
+                if (!check1.test(this.password)) {
+                    this.passwordTips = "Пароль меньше 8 символов"
+                    return
+                }
+                let check2 = /^(?=.*?[A-Z]).{8,}$/
+                if (!check2.test(this.password)) {
+                    this.passwordTips = "Пароль не содержит заглавных букв"
+                    return
+                }
+                let check3 = /^(?=.*?[a-z]).{8,}$/
+                if (!check3.test(this.password)) {
+                    this.passwordTips = "Пароль не содержит строчных букв"
+                    return
+                }
+                let check4 = /^(?=.*?[0-9]).{8,}$/
+                if (!check4.test(this.password)) {
+                    this.passwordTips = "Пароль не содержит цифр"
+                    return
+                }
+                this.isValidPassword = true
+                this.passwordTips = ""
+            }
+        },
+        viewPassword() {
+            if (this.$refs.password.getAttribute('type') == 'password') {
+                this.$refs.password_control.classList.add("view");
+                this.$refs.password.setAttribute('type', 'text');
+                this.$refs.password_confirm.setAttribute('type', 'text');
+            } else {
+                this.$refs.password_control.classList.remove("view");
+                this.$refs.password.setAttribute('type', 'password');
+                this.$refs.password_confirm.setAttribute('type', 'password');
+            }
+        }
     },
-
-
 };
 </script>
 
@@ -154,6 +207,7 @@ export default {
     font-family: 'Rostelecom Basic Light', Helvetica, Arial, sans-serif;
     margin: 1.5rem 0;
 }
+
 .form-group input {
     outline: 1px solid #075668;
 }
@@ -171,6 +225,14 @@ export default {
     position: relative;
     display: flex;
     font-family: 'Rostelecom Basic Light', Helvetica, Arial, sans-serif;
+}
+
+.pass p {
+    position: absolute;
+    right: 2rem;
+    color: red;
+    transition: all .2s ease;
+    pointer-events: none;
 }
 
 .form-group label {
@@ -194,6 +256,7 @@ export default {
     background-color: #fff;
     outline: 1px solid #075668;
     border-radius: .5rem;
+    color: #075668;
 }
 
 
@@ -204,11 +267,6 @@ export default {
     color: #333;
     border: none;
 }
-
-
-
-
-
 
 
 .forgot-password {
@@ -246,4 +304,20 @@ export default {
     .login-form {
         font-size: 14px;
     }
-}</style>
+}
+
+/* кнопка показать пароль */
+.password-control {
+    position: absolute;
+    top: 11px;
+    right: 6px;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background: url("../assets/svg/no-view.svg") 0 0 no-repeat;
+}
+
+.view {
+    background: url("../assets/svg/view.svg") 0 0 no-repeat;
+}
+</style>

@@ -90,7 +90,7 @@ export default {
 
 <style scoped>
 .column-delete {
-    justify-content: end;
+    justify-content: flex-end;
     display: flex;
 }
 
@@ -126,7 +126,7 @@ export default {
 .close_detail {
     margin: 15px 0;
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
 }
 
 .delete-button-detail {

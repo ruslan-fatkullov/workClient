@@ -65,7 +65,7 @@ export default {
     box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5);
     transform: translate(-50%, -50%);
     margin: auto;
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
     width: 25%;

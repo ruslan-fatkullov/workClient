@@ -70,7 +70,7 @@ export default {
 
 <style scoped>
 .auth_page {
-    height: 92vh;
+    height: 90vh;
     display: flex;
     flex-direction: column;
 }

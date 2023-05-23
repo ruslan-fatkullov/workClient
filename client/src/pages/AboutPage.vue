@@ -3,49 +3,30 @@
         <div class="container">
 
             <div class="row justify-content-center">
-                <div class="col-md-8 user-data-field">
-                    <div class="row">
-                        <div class="col-md-6 label-icon-group">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
-                                class="bi bi-person" viewBox="0 0 16 16">
-                                <path
-                                    d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z" />
-                            </svg>
-                            <p class="sad">Имя</p>
-                        </div>
-                        <div class="col-md-6">
-                            <p>{{ firstName }}</p>
+                <div class="col-md-4 user-data-field">
+                    <div class="row justify-content-center">
+                        <div class="col-md-12 group">
+                            <label for="firstName" class="group-label">Имя</label>
+                            <p id="firstName group_p">{{ firstName }}</p>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6 label-icon-group">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
-                                class="bi bi-person" viewBox="0 0 16 16">
-                                <path
-                                    d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z" />
-                            </svg>
-                            <p>Фамилия</p>
-                        </div>
-                        <div class="col-md-6">
-                            <p>{{ lastName }}</p>
+                    <div class="row justify-content-center">
+
+                        <div class="col-md-12 group">
+                            <label for="lastName" class="group-label">Фамилия</label>
+                            <p id="lastName">{{ lastName }}</p>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6 label-icon-group">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
-                                class="bi bi-envelope" viewBox="0 0 16 16">
-                                <path
-                                    d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4Zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2Zm13 2.383-4.708 2.825L15 11.105V5.383Zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741ZM1 11.105l4.708-2.897L1 5.383v5.722Z" />
-                            </svg>
-                            <p>email</p>
-                        </div>
-                        <div class="col-md-6">
-                            <p>{{ email }}</p>
+                    <div class="row justify-content-center">
+
+                        <div class="col-md-12 group">
+                            <label for="email" class="group-label">Email</label>
+                            <p id="email">{{ email }}</p>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row justify-content-center button-group">
                         <div class="col-md-6">
-                            <div class="change-pass-button" v-on:click="changePassword()">Поменять пароль</div>
+                            <div class="main_button change-pass" v-on:click="changePassword()">Поменять пароль</div>
                         </div>
                         <div class="col-md-6">
                             <div class="exit-button" v-on:click="logout()">Выйти</div>
@@ -112,17 +93,45 @@ export default {
 </script>
 
 <style scoped>
+
+.group{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    outline: 1px solid black;
+    border-radius: 5px;
+    padding: .5rem;
+    margin-top: 2rem;
+}
+.group-label{
+    position: absolute;
+    left: 0;
+    top: 0;
+    transform: translate(1em, -1em);
+    background-color: #fff;
+    outline: 1px solid black;
+    border-radius: 10px;
+    padding: 0 0.8rem;
+}
+.group-p{
+    height: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+    padding: auto;
+}
 .about-page {
     font-family: 'Rostelecom Basic Light', Helvetica, Arial, sans-serif;
     font-size: 20px;
     color: aliceblue;
     margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
 }
 
 .user-data-field {
     background-color: rgb(255, 255, 255);
     color: rgb(80, 76, 76);
-    padding: 50px 100px;
+    padding: 10px 50px;
+    outline: 3px solid #075668;
 
 }
 
@@ -154,19 +163,17 @@ export default {
 
 
 .button-group {
-    display: flex;
+    margin-top: 1rem;
 }
 
 .button-group div {
-    margin-right: 15px;
-    padding: 10px 25px;
 }
 
 .exit-button {
     background-color: rgb(227, 45, 42);
     padding: 5px;
-    border-radius: 5px;
     color: aliceblue;
+    height: 100%;
 }
 
 .exit-button:hover {
@@ -185,5 +192,8 @@ export default {
 .label_data_row p,
 svg {
     width: auto;
+}
+.change-pass{
+    font-size: 1rem;
 }
 </style>

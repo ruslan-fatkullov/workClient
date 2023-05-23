@@ -21,7 +21,8 @@
                     </li>
                     <li class="nav-item">
                         <div class="">
-                            <a @click="openMenu()" class="nav-link" href="">Сайт компании</a>
+                            <a @click="openMenu()" class="nav-link" href="https://esvoavia.ru" target="_blank">Сайт
+                                компании</a>
                         </div>
                     </li>
                     <li class="nav-item">
@@ -162,7 +163,7 @@ export default {
 
 <style scoped>
 .plug {
-    height: 8vh;
+    height: 10vh;
     display: none;
 }
 
@@ -175,7 +176,7 @@ export default {
     width: 100%;
     position: relative;
     z-index: 9999;
-    height: 8vh;
+    height: 10vh;
 }
 
 .fixed_navigation {
@@ -201,13 +202,13 @@ export default {
 }
 
 .site-logo img {
-    height: 100%;
+    height: 70%;
 }
 
 .nav-panel {
     background-color: #ffffff;
     display: flex;
-    height: 8vh;
+    height: 10vh;
 }
 
 .nav {
@@ -219,11 +220,13 @@ export default {
     margin: auto 0;
 }
 
+
+
 .nav-link {
     user-select: none;
     font-family: 'Rostelecom Basic Light', Helvetica, Arial, sans-serif;
     position: relative;
-    font-size: 14px;
+    font-size: 1.4rem;
     color: #075668;
     text-decoration: none;
     line-height: 2;
@@ -232,8 +235,8 @@ export default {
 .profile-link {
     font-family: 'Rostelecom Basic Light', Helvetica, Arial, sans-serif;
     position: relative;
-    padding: 5px 10px;
-    font-size: 14x;
+    padding: .7rem 1rem;
+    font-size: 20x;
     line-height: 2;
     letter-spacing: 1px;
     border: 1px solid;
@@ -319,7 +322,15 @@ export default {
     display: flex;
 }
 
-@media only screen and (max-width : 900px) {
+@media only screen and (max-width : 1400px) {
+
+    .nav-link {
+        font-size: 1.1rem;
+    }
+}
+
+
+@media only screen and (max-width : 1200px) {
 
     .nav-panel {
         display: block;
@@ -380,9 +391,11 @@ export default {
     }
 
 
+
     .hamburger_icon {
         margin-left: auto;
         margin-top: auto;
+        margin-bottom: auto;
         margin-right: 20px;
         width: 25px;
         height: 25px;
@@ -396,13 +409,13 @@ export default {
 
     .hamburger_item {
         display: block;
-        position: relative;
+        position: absolute;
+        top: calc(50% - 1.5px);
         content: '';
         width: 25px;
         height: 3px;
         background-color: rgb(82, 82, 82);
         border-radius: 4px;
-        margin: auto auto;
         transition-property: transform;
         transition-duration: 250ms;
         transition-timing-function: ease;
@@ -441,8 +454,6 @@ export default {
     .hamburger_rotate::after {
         display: none;
     }
-
-    .wrapper {}
 
 }
 </style>
