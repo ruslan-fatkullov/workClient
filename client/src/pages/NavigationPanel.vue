@@ -1,6 +1,5 @@
 <template>
     <div @click="openMenu()" class="wrapper" ref="wrapper"></div>
-    <div ref="plug" class="plug"></div>
     <div @click.stop="" ref="top_bar" class="top_bar">
         <div class="container nav-panel-wrapper">
             <div class="nav-panel">
@@ -9,7 +8,9 @@
                     </div>
 
                     <div @click="openMenu()" class="hamburger_icon">
+                        <span ref="hamburger_item_before" class="hamburger_item"></span>
                         <span ref="hamburger_item" class="hamburger_item"></span>
+                        <span ref="hamburger_item_after" class="hamburger_item"></span>
                     </div>
                 </div>
 
@@ -51,22 +52,11 @@
                             </div>
                             <div class="list">
                                 <div @click="toProfile()" class="list-item">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                        class="bi bi-person-square" viewBox="0 0 16 16">
-                                        <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
-                                        <path
-                                            d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm12 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1v-1c0-1-1-4-6-4s-6 3-6 4v1a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12z" />
-                                    </svg>
+                                    <div class="profile-svg"></div>
                                     Профиль
                                 </div>
                                 <div @click="showDialog = !showDialog" class="list-item">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                        class="bi bi-box-arrow-right" viewBox="0 0 16 16">
-                                        <path fill-rule="evenodd"
-                                            d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z" />
-                                        <path fill-rule="evenodd"
-                                            d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z" />
-                                    </svg>
+                                    <div class="exit-svg"></div>
                                     Выйти
                                 </div>
                             </div>
@@ -110,13 +100,13 @@ export default {
     methods: {
         handleScroll() {
             let screenHeight = window.screen.height
-            let navHeight = screenHeight / 100 * 8
+            let navHeight = screenHeight / 100 * 10
             if (window.scrollY > navHeight) {
                 this.$refs.top_bar.classList.add("fixed_navigation")
-                this.$refs.plug.classList.add("plug-visible")
+                this.$emit('setMargin', 1)
             } else {
                 this.$refs.top_bar.classList.remove("fixed_navigation")
-                this.$refs.plug.classList.remove("plug-visible")
+                this.$emit('setMargin', 0)
             }
         },
         toProfile() {
@@ -133,18 +123,19 @@ export default {
             if (this.showNavigation) {
 
                 this.$refs.hamburger_item.classList.add("hamburger_rotate")
+                this.$refs.hamburger_item_before.classList.add("hamburger_rotate_before")
+                this.$refs.hamburger_item_after.classList.add("hamburger_rotate_after")
                 this.$refs.wrapper.classList.add("nav_active_wrapper")
                 this.$refs.nav.classList.add("nav_active")
                 return
             }
             this.$refs.hamburger_item.classList.remove("hamburger_rotate")
+            this.$refs.hamburger_item_before.classList.remove("hamburger_rotate_before")
+            this.$refs.hamburger_item_after.classList.remove("hamburger_rotate_after")
             this.$refs.wrapper.classList.remove("nav_active_wrapper")
             this.$refs.nav.classList.remove("nav_active")
 
         },
-        asd() {
-            alert("DSa")
-        }
     },
     computed: {
         computeFullname() {
@@ -162,13 +153,31 @@ export default {
 </script>
 
 <style scoped>
-.plug {
+/*.plug {
     height: 10vh;
     display: none;
 }
 
 .plug-visible {
     display: block;
+}*/
+
+.profile-svg {
+    height: 16px;
+    width: 16px;
+    background: url('../assets/svg/profile-svg.svg') no-repeat;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: .5rem;
+}
+
+.exit-svg {
+    height: 16px;
+    width: 16px;
+    background: url('../assets/svg/exit-svg.svg') no-repeat;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: .5rem;
 }
 
 .top_bar {
@@ -181,7 +190,7 @@ export default {
 
 .fixed_navigation {
     position: fixed;
-    opacity: .98;
+    opacity: .96;
     top: 0;
     animation: fixed_menu .3s linear;
 }
@@ -304,6 +313,8 @@ export default {
     line-height: 2;
     padding: 5px;
     font-size: 14px;
+    display: flex;
+    justify-content: center;
 
 }
 
@@ -333,30 +344,37 @@ export default {
 @media only screen and (max-width : 1200px) {
 
     .nav-panel {
-        display: block;
-        height: auto;
-        position: relative;
-
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
     }
 
     .top_bar {
-
-        height: auto;
-        z-index: 99;
+        height: 10vh;
+        z-index: 999;
     }
 
+    .logo-burger-group{
+        position: relative;
+    }
     .site-logo img {
-        width: 150px;
+        height: 100%;
+        padding: 4% 0;
+    }
+    .site-logo{
+        height: 10vh;
+        position: relative;
     }
 
     .nav {
         display: none;
         background-color: #f5f5f5;
         padding: 30px;
+        margin-top: 10vh;
         border-radius: 0 0 10px 10px;
         position: absolute;
         z-index: -1;
-        right: 0;
+        right: 9vw;
         animation: slide-down .5s;
     }
 
@@ -409,51 +427,59 @@ export default {
 
     .hamburger_item {
         display: block;
-        position: absolute;
-        top: calc(50% - 1.5px);
         content: '';
         width: 25px;
         height: 3px;
+        margin-bottom: 5px;
         background-color: rgb(82, 82, 82);
         border-radius: 4px;
-        transition-property: transform;
-        transition-duration: 250ms;
-        transition-timing-function: ease;
     }
 
-    .hamburger_item::before {
-        position: absolute;
-        display: block;
-        width: 25px;
-        content: '';
-        height: 3px;
-        background-color: rgb(82, 82, 82);
-        border-radius: 4px;
-        transform: translateY(-8px);
-    }
 
-    .hamburger_item::after {
-        position: absolute;
-        display: block;
-        content: '';
-        width: 25px;
-        height: 3px;
-        background-color: rgb(82, 82, 82);
-        border-radius: 4px;
-        transform: translateY(8px);
-    }
 
     .hamburger_rotate {
-        transform: rotate(-45deg);
+        transform: rotate(45deg);
+        animation: disapear_hamburger .3s ease;
     }
 
-    .hamburger_rotate::before {
-        transform: rotate(90deg);
+    @keyframes disapear_hamburger {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(45deg);
+        }
     }
 
-    .hamburger_rotate::after {
-        display: none;
+    .hamburger_rotate_before {
+        transform: translateY(8px) rotate(45deg);
+        animation: rotate_before .3s ease;
     }
 
-}
-</style>
+    @keyframes rotate_before {
+        0% {
+            transform: translateY(0px) rotate(0deg);
+        }
+
+        100% {
+            transform: translateY(8px) rotate(45deg);
+        }
+    }
+
+    .hamburger_rotate_after {
+        transform: translateY(-8px) rotate(-45deg);
+        animation: rotate_after .3s ease;
+    }
+
+    @keyframes rotate_after {
+        0% {
+            transform: translateY(0px) rotate(0deg);
+        }
+
+        100% {
+            transform: translateY(-8px) rotate(-45deg);
+        }
+    }
+
+}</style>

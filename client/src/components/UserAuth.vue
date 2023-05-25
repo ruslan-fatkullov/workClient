@@ -14,7 +14,7 @@
             <input v-model="email" type="email" placeholder=" " class="form-control" id="email" name="email"
                 :disabled="isRequest" required />
         </div>
-        <div class="form-group pass" :class="{ 'active_label_style': password }">
+        <div class="form-group pass" :class="{ 'active_label_style': password }" ref="validation_result">
             <label for="password">Пароль</label>
             <input v-on:keyup="validate()" v-model="password" type="password" class="form-control" ref="password"
                 id="password" name="password" :disabled="isRequest" required />
@@ -137,6 +137,8 @@ export default {
         },
         validate() {
             if (!this.isLoginMode) {
+
+                this.$refs.validation_result.classList.remove("valid_pass")
                 this.isValidPassword = false
                 if (this.password.length === 0) {
                     this.passwordTips = ""
@@ -162,8 +164,9 @@ export default {
                     this.passwordTips = "Пароль не содержит цифр"
                     return
                 }
+                this.$refs.validation_result.classList.add("valid_pass")
+                this.passwordTips = "Пароль надежный"
                 this.isValidPassword = true
-                this.passwordTips = ""
             }
         },
         viewPassword() {
@@ -233,6 +236,9 @@ export default {
     color: red;
     transition: all .2s ease;
     pointer-events: none;
+}
+.valid_pass p{
+    color: green;
 }
 
 .form-group label {

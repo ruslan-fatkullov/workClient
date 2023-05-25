@@ -14,7 +14,6 @@
                 <div class="row">
                     <div class="col-lg-6 auth-page-text">
                         <p>Для скачивания лаунчера авторизуйтесь или зарегистрируйте учетную запись</p>
-
                     </div>
                     <div class="col-lg-6">
                         <UserAuth class="user_auth"></UserAuth>
@@ -111,12 +110,13 @@ export default {
 }
 
 .scroll-bg {
-    height: 100%;
+    height: 110%;
     width: 120%;
     position: fixed;
+    top: -10vh;
     z-index: -99;
     background-color: #212529;
-    background-image: url('../assets/plane_backgound.png');
+    background-image: url('../assets/plane_backgound.jpg');
     background-size: cover;
     animation: scrollBg 40s linear forwards infinite;
     background-repeat: repeat-x;

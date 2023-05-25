@@ -1,7 +1,5 @@
 <template>
   <div class="download_back">
-
-
     <div class="description_header_wrapper">
       <div class="description_header_background"></div>
       <div class="container description_header_text">
@@ -34,33 +32,18 @@
                     </div>
                   </div>
                 </div>
-
               </div>
             </div>
           </div>
         </div>
-
         <div class="scroll_block">
           <span>Узнать подробнее</span>
           <div @click="scrollDown()" class="scroll_down">
-            <svg width="48px" height="48px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
-              stroke="#000000">
-              <g id="SVGRepo_bgCarrier" stroke-width="0" />
-              <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-              <g id="SVGRepo_iconCarrier">
-                <path d="M19 5L12.7071 11.2929C12.3166 11.6834 11.6834 11.6834 11.2929 11.2929L5 5" stroke="#ffffff"
-                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                <path d="M19 13L12.7071 19.2929C12.3166 19.6834 11.6834 19.6834 11.2929 19.2929L5 13" stroke="#ffffff"
-                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-              </g>
-            </svg>
+            <div class="scroll-svg"></div>
           </div>
         </div>
-
-
       </div>
     </div>
-
     <div ref="slider" class="dowload_wrapper">
       <SliderDownLoadPage class="slider_component"></SliderDownLoadPage>
     </div>
@@ -75,9 +58,6 @@
         УКК нового поколения, прямо к себе на персональный компьютер, в ознакомительных целях.
         Начать свое знакомство с нашими системами можно уже сейчас!</p>
     </div>
-
-
-
   </div>
 </template>
 
@@ -126,8 +106,8 @@ export default {
     scrollDown() {
       this.$refs.slider.scrollIntoView({ behavior: 'smooth' });
     },
-    openPDF(){
-      window.open('./gui.pdf','_blank')
+    openPDF() {
+      window.open('./gui.pdf', '_blank')
     }
   },
   mounted() {
@@ -153,11 +133,22 @@ export default {
   font-size: 2rem;
 }
 
+.scroll_down {
+  display: flex;
+  justify-content: center;
+}
+
 .scroll_down:hover {
   cursor: pointer;
 }
 
-.scroll_down svg {
+.scroll-svg {
+  height: 48px;
+  width: 48px;
+  background: url('../assets/svg/scroll-down-svg.svg');
+}
+
+.scroll_down .scroll-svg {
   animation: scroll_down 5s infinite;
 }
 
@@ -236,7 +227,7 @@ export default {
   height: 90vh;
   width: 100%;
   z-index: -99;
-  background-image: url('../assets/plane_backgound.png');
+  background-image: url('../assets/plane_backgound.jpg');
   background-color: linear-gradient(180deg, #075668 15%, rgb(212, 212, 212) 100%);
   background-size: cover;
   background-repeat: repeat-x;
@@ -459,6 +450,7 @@ a {
   .main_button {
     font-size: 1rem;
   }
+
   .instruction {
     font-size: 1rem;
   }
@@ -491,4 +483,5 @@ a {
   .scroll_block span {
     font-size: 1.25rem;
   }
-}</style>
+}
+</style>

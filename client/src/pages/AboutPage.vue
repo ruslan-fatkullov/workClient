@@ -93,8 +93,7 @@ export default {
 </script>
 
 <style scoped>
-
-.group{
+.group {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -103,7 +102,8 @@ export default {
     padding: .5rem;
     margin-top: 2rem;
 }
-.group-label{
+
+.group-label {
     position: absolute;
     left: 0;
     top: 0;
@@ -113,12 +113,14 @@ export default {
     border-radius: 10px;
     padding: 0 0.8rem;
 }
-.group-p{
+
+.group-p {
     height: auto;
     margin-top: auto;
     margin-bottom: auto;
     padding: auto;
 }
+
 .about-page {
     font-family: 'Rostelecom Basic Light', Helvetica, Arial, sans-serif;
     font-size: 20px;
@@ -166,9 +168,6 @@ export default {
     margin-top: 1rem;
 }
 
-.button-group div {
-}
-
 .exit-button {
     background-color: rgb(227, 45, 42);
     padding: 5px;
@@ -193,7 +192,7 @@ export default {
 svg {
     width: auto;
 }
-.change-pass{
+
+.change-pass {
     font-size: 1rem;
-}
-</style>
+}</style>
