@@ -1,5 +1,6 @@
 <template>
-    <form class="change_pass_form" @submit.prevent="changePass()">
+    <div class="form-wrapper">
+        <form class="change_pass_form" @submit.prevent="changePass()">
         <label for="new_password">Новый пароль:</label>
         <input v-model="password" type="password" id="new_password" name="new_password" required/><br/>
 
@@ -9,10 +10,12 @@
             <p>{{ resultString }}</p>
         </div>
         <div class="form-group">
-            <input type="submit" value="Изменить пароль"/>
-            <input @click="$emit('closeForm')" type="submit" value="Отменить"/>
+            <input type="submit" value="Изменить пароль" class="yes"/>
+            <div @click="$emit('closeForm')" value="Отменить" class="no">Отменить</div>
         </div>
     </form>
+    </div>
+    
 </template>
 
 <script>
@@ -61,18 +64,26 @@ export default {
 </script>
 
 <style scoped>
-.change_pass_form {
-    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5);
-    transform: translate(-50%, -50%);
-    margin: auto;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    width: 25%;
-    padding: 20px;
+.form-wrapper{
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     z-index: 9999;
+    position: fixed;
+}
+.change_pass_form {
+    
+    box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.5);
+    padding: 20px;
     background-color: #f2f2f2;
     border-radius: 5px;
+    position: absolute;
+    margin: auto;
+    top: 50%;
+    left: 50%;
+    z-index: 99;
+    transform: translate(-50%, -50%);
 }
 
 /* стили для полей ввода */
@@ -88,8 +99,8 @@ input[type="text"] {
 }
 
 /* стили для кнопки */
-input[type="submit"] {
-    background-color: #4caf50;
+input[type="submit"], .no {
+    background-color: rgb(84, 200, 84);
     color: white;
     padding: 14px 20px;
     margin: 8px 0;
@@ -97,9 +108,16 @@ input[type="submit"] {
     border-radius: 4px;
     cursor: pointer;
 }
+.no{
+    background-color: rgb(202, 85, 85);
+    width: 100%;
+}
+.no:hover{
+    background-color: rgb(215, 40, 40);
+}
 
 input[type="submit"]:hover {
-    background-color: #4d8f4f;
+    background-color: rgb(22, 242, 22);
 }
 
 
@@ -107,8 +125,22 @@ input[type="submit"]:hover {
 h2 {
     text-align: center;
 }
-
+.form-group{
+    display: flex;
+    justify-content: space-between;
+}
 .form-group input {
-    margin-left: 15px;
+    width: 100%;
+    margin-right: 1rem;
+}
+
+
+
+@media only screen and (max-width : 900px) {
+    .form-group {
+        display: flex;
+        margin: auto;
+    }
+
 }
 </style>

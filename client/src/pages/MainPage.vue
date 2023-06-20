@@ -9,11 +9,14 @@
         </div>
 
         <DownloadProjectsPage v-if="isAuth"></DownloadProjectsPage>
+        <!--<LandingPageVue v-if="isAuth"></LandingPageVue>-->
         <div v-else class="auth_page">
             <div class="container auth_page_content">
                 <div class="row">
                     <div class="col-lg-6 auth-page-text">
-                        <p>Для скачивания лаунчера авторизуйтесь или зарегистрируйте учетную запись</p>
+                        <p>Для скачивания загрузчика демонстрационных проектов авторизуйтесь или зарегистрируйте новую
+                            учетную запись. Подробно рассмотреть процесс загрузки можно в <a href="./gui.pdf"
+                                target="_blank">инструкции</a></p>
                     </div>
                     <div class="col-lg-6">
                         <UserAuth class="user_auth"></UserAuth>
@@ -25,11 +28,9 @@
 </template>
 
 <script>
-import router from '../router/router'
-/*import axios from 'axios'
-import config from '../config'*/
 import store from '../store'
 import DownloadProjectsPage from './DownloadProjectsPage.vue'
+//import LandingPageVue from './LandingPage.vue'
 import UserAuth from '@/components/UserAuth.vue'
 
 
@@ -47,21 +48,14 @@ export default {
             this.loginStatus = false
         }
     },
-    methods: {
-        toDownLoad() {
-            router.push('/downloadProjects')
-        }
-    },
     computed: {
-        fullName() {
-            return `${store.getters.getAuthUserInfo.firstName}`
-        },
         isAuth() {
             return store.getters.getAuthBool
         }
     },
     components: {
         DownloadProjectsPage,
+        //LandingPageVue,
         UserAuth
     }
 }
@@ -79,14 +73,28 @@ export default {
 }
 
 .auth-page-text {
-    margin-top: 8rem;
+    margin-top: 10%;
     text-align: center;
     font-family: 'Rostelecom Basic Light', Helvetica, Arial, sans-serif;
 }
 
 .auth-page-text p {
-    font-size: 40px;
+    font-size: 2.1rem;
     color: rgb(255, 255, 255);
+    text-align: right;
+}
+
+.auth-page-text a {
+    color: #007bff;
+    text-decoration: none;
+    transition: all .2s ease;
+    text-decoration: underline;
+
+}
+
+.auth-page-text a:hover {
+    cursor: pointer;
+    color: #0062ca;
 }
 
 .auth_page_content {
@@ -211,5 +219,4 @@ export default {
     .auth_page {
         height: auto;
     }
-}
-</style>
+}</style>

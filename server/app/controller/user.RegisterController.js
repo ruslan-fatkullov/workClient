@@ -1,7 +1,7 @@
 const db = require("../models/");
 const User = db.user;
 
-const crypto= require("crypto")
+const crypto = require("crypto")
 const sm = require("../mail.sender")
 
 exports.signUp = (req, res) => {
@@ -32,4 +32,22 @@ exports.signUp = (req, res) => {
     });
 
 };
+
+
+exports.replaceUserData = (req, res) => {
+    User.update(
+        {
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            email: req.body.email
+        },
+        { where: {
+            email: req.body.oldEmail
+        } }
+    ).then(function () { 
+        return res.json({ success: true, statusCode: 200, message: 'Данные успешно обновлены' });
+    }).catch(function(){
+        return res.json({ success: false, statusCode: 302, message: 'Не удалось обновить данные' }); 
+    })
+}
 

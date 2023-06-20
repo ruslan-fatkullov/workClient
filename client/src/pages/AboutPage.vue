@@ -1,46 +1,69 @@
 <template>
     <div class="about-page">
-        <div class="container">
+        <div class="container-fluid">
 
-            <div class="row justify-content-center">
-                <div class="col-md-4 user-data-field">
-                    <div class="row justify-content-center">
-                        <div class="col-md-12 group">
-                            <label for="firstName" class="group-label">Имя</label>
-                            <p id="firstName group_p">{{ firstName }}</p>
+            <div class="row justify-content-center main-container">
+                <div class="col-lg-3"></div>
+                <div class="col-xl-4 col-lg-5 col-md-8 col-sm-11 col-11 user-data-field">
+                    <div class="user-data-header">
+                        <p>Данные профиля</p>
+                    </div>
+                    <div class="label-input-group">
+                        <div v-if="!editProfile" class="no-active-label">{{ firstName }}</div>
+                        <input v-else type="text" v-model="firstName">
+                        <div v-if="!editProfile" class="pre-logo user"></div>
+                    </div>
+                    <div class="label-input-group">
+                        <div v-if="!editProfile" class="no-active-label">{{ lastName }}</div>
+                        <input v-else type="text" v-model="lastName">
+                        <div v-if="!editProfile" class="pre-logo user"></div>
+                    </div>
+                    <div class="label-input-group">
+                        <div v-if="!editProfile" class="no-active-label">{{ email }}</div>
+                        <input v-else type="text" v-model="email">
+                        <div v-if="!editProfile" class="pre-logo eml"></div>
+                    </div>
+                    <div v-if="!editProfile" @click="changeMode()" class="edit-data-profile">
+                        <p>Редактировать</p>
+                        <div class="right-arrow"></div>
+                    </div>
+                    <div v-else class="confirm-undo-edit">
+                        <div @click="replaceUserData()" class="confirm_edit">
+                            <p>Сохранить</p>
+                            <div class="confirm-label"></div>
+                        </div>
+                        <div @click="undoEdit()" class="undo_edit">
+                            <div class="undo_edit_svg"></div>
                         </div>
                     </div>
-                    <div class="row justify-content-center">
-
-                        <div class="col-md-12 group">
-                            <label for="lastName" class="group-label">Фамилия</label>
-                            <p id="lastName">{{ lastName }}</p>
-                        </div>
-                    </div>
-                    <div class="row justify-content-center">
-
-                        <div class="col-md-12 group">
-                            <label for="email" class="group-label">Email</label>
-                            <p id="email">{{ email }}</p>
-                        </div>
-                    </div>
-                    <div class="row justify-content-center button-group">
+                    <!--<div class="row justify-content-center button-group">
                         <div class="col-md-6">
                             <div class="main_button change-pass" v-on:click="changePassword()">Поменять пароль</div>
                         </div>
                         <div class="col-md-6">
                             <div class="exit-button" v-on:click="logout()">Выйти</div>
                         </div>
+                    </div>-->
+                </div>
+                <div class="col-xl-4 col-lg-4 col-md-7 col-sm-10 col-xs-9 col-9">
+                    <div class="side-panel">
+                        <div v-on:click="changePassword()" class="panel-element">Поменять пароль</div>
+                        <div v-on:click="showDialog = !showDialog" class="panel-element danger">Выйти</div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
+
+    <ConfirmDialogVue v-if="showDialog" :dialogTitle="'Вы действительно хотите выйти?'"
+        @undoAction="showDialog = !showDialog" @confirmAction="logout()"></ConfirmDialogVue>
 
     <changePassword @closeForm="closeForm()" v-if="changePass"></changePassword>
 </template>
 
 <script>
+import ConfirmDialogVue from '../elements/ConfirmDialog.vue'
 import axios from 'axios'
 import conf from "../config"
 import changePassword from "../components/ChangePass.vue"
@@ -54,7 +77,13 @@ export default {
             firstName: "",
             lastName: "",
             email: "",
-            changePass: false
+            tempFirstName: "",
+            tempLastName: "",
+            tempEmail: "",
+            changePass: false,
+            editProfile: false,
+            buttonInfo: "Редактировать",
+            showDialog: false,
         }
     },
     methods: {
@@ -66,6 +95,29 @@ export default {
         },
         closeForm() {
             this.changePass = false
+        },
+        changeMode() {
+            this.editProfile = !this.editProfile
+            if (this.editProfile) {
+                this.tempFirstName = this.firstName
+                this.tempLastName = this.lastName
+                this.tempEmail = this.email
+            }
+        },
+        undoEdit() {
+            this.editProfile = false
+            this.firstName = this.tempFirstName
+            this.lastName = this.tempLastName
+            this.email = this.tempEmail
+        },
+        replaceUserData(){
+            let user = {
+                oldEmail: localStorage.getItem("email"),
+                firstName: this.firstName,
+                lastName: this.lastName,
+                email: this.email
+            }
+            store.dispatch("replaceUserData", user)
         }
     },
     beforeCreate() {
@@ -88,11 +140,58 @@ export default {
     },
     components: {
         changePassword,
+        ConfirmDialogVue
     }
 }
 </script>
 
 <style scoped>
+.pre-logo{
+    position: absolute;
+    top: 25%;
+    left: 1rem;
+    height: 22px;
+    width: 22px;
+}
+.user{
+    background: url('../assets/svg/user-03-svgrepo-com.svg') no-repeat;
+}
+.eml{
+    background: url('../assets/svg/at-symbol-svgrepo-com.svg') no-repeat;
+}
+.container-fluid {
+    padding: 0;
+}
+
+.side-panel {
+    background-color: #d6d6d6;
+    padding: 1rem 1rem 1rem 1rem;
+    border-radius: 1rem;
+    width: 100%;
+}
+
+.panel-element {
+    border-radius: .5rem;
+    height: 3.5rem;
+    vertical-align: center;
+    background-color: #ffffff;
+    color: #878787;
+    margin-top: .5rem;
+}
+
+.panel-element:hover {
+    cursor: pointer;
+    background-color: #f2f2f2;
+}
+
+.danger {
+    color: red;
+}
+
+.main-container {
+    margin: 0;
+}
+
 .group {
     position: relative;
     display: flex;
@@ -103,15 +202,18 @@ export default {
     margin-top: 2rem;
 }
 
+.user-data-header {
+    border-bottom: 3px solid rgb(80, 76, 76);
+}
+
 .group-label {
     position: absolute;
     left: 0;
-    top: 0;
+    top: 8%;
     transform: translate(1em, -1em);
     background-color: #fff;
-    outline: 1px solid black;
     border-radius: 10px;
-    padding: 0 0.8rem;
+    padding: 0 0.2rem;
 }
 
 .group-p {
@@ -125,15 +227,16 @@ export default {
     font-family: 'Rostelecom Basic Light', Helvetica, Arial, sans-serif;
     font-size: 20px;
     color: aliceblue;
-    margin-top: 1.5rem;
-    margin-bottom: 1.5rem;
+    background-color: #ffffff;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-top: 1px solid black;
 }
 
 .user-data-field {
     background-color: rgb(255, 255, 255);
     color: rgb(80, 76, 76);
     padding: 10px 50px;
-    outline: 3px solid #075668;
 
 }
 
@@ -195,4 +298,132 @@ svg {
 
 .change-pass {
     font-size: 1rem;
+}
+
+.edit-data-profile {
+    border-radius: 2.5rem;
+    margin-top: 1rem;
+    height: 3.5rem;
+    line-height: 3.5rem;
+    align-content: center;
+    border: 1px solid;
+    display: flex;
+    justify-content: center;
+    transition: all .3s ease;
+}
+
+.edit-data-profile:hover {
+    cursor: pointer;
+    background-color: #eeeeee;
+}
+
+.edit-data-profile:hover .right-arrow {
+    transform: translate(10px);
+}
+
+.edit-data-profile p,
+.right-arrow {
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.right-arrow {
+    transition: all .3s ease;
+    margin-left: 1rem;
+    height: 32px;
+    width: 32px;
+    margin-top: auto;
+    margin-bottom: auto;
+    background: url('../assets/svg/arrow-right-svgrepo-com.svg') no-repeat;
+}
+
+.label-input-group {
+    margin-top: 1rem;
+    height: 3.4rem;
+    line-height: 3.4rem;
+    position: relative;
+}
+
+.no-active-label {
+    border: 1px solid #b7b7b7;
+    background-color: #e3e3e3;
+    color: #878787;
+    height: 100%;
+    border-radius: .5rem;
+
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.label-input-group input {
+    height: 100%;
+    width: 100%;
+    border-radius: .5rem;
+    text-align: center;
+    border: 1px solid;
+}
+
+.confirm-undo-edit {
+    color: white;
+    margin-top: 1rem;
+    height: 3.5rem;
+    line-height: 3.5rem;
+    display: flex;
+}
+
+.confirm_edit {
+    background: linear-gradient(to right, rgb(76, 237, 73), rgb(63, 231, 60));
+    border-radius: 2.5rem 0 0 2.5rem;
+    transition: all .2s ease;
+    width: 80%;
+    display: flex;
+    justify-content: center;
+}
+
+.confirm_edit:hover {
+    background: linear-gradient(to right, rgb(23, 220, 19), rgb(4, 255, 0));
+    transform: scale(1.01) translate(-1px);
+    cursor: pointer;
+}
+
+.confirm-label {
+    transition: all .3s ease;
+    margin-left: 1rem;
+    height: 32px;
+    width: 32px;
+    margin-top: auto;
+    margin-bottom: auto;
+    background: url('../assets/svg/yes-svgrepo-com.svg') no-repeat;
+}
+
+.undo_edit {
+    background-color: rgb(236, 76, 76);
+    width: 20%;
+    border-radius: 0 2.5rem 2.5rem 0;
+    display: flex;
+    justify-content: center;
+    transition: all .2s ease;
+}
+
+.undo_edit:hover {
+    cursor: pointer;
+    background-color: rgb(253, 0, 0);
+    transform: scale(1.01);
+}
+
+.undo_edit_svg {
+    transition: all .3s ease;
+    height: 20px;
+    width: 20px;
+    margin-top: auto;
+    margin-bottom: auto;
+    background: url('../assets/svg/cancel-svgrepo-com.svg') no-repeat;
+}
+
+
+@media only screen and (max-width : 400px) {
+
+    .right-arrow {
+        display: none;
+    }
 }</style>

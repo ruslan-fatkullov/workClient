@@ -1,6 +1,6 @@
 <template>
     <div ref="wrapper" class="wrapper">
-        <div class="content">
+        <div class="navigation-content">
             <navBar @setMargin="setMargin"></navBar>
             <div ref="content_main" class="content_main">
                 <router-view></router-view>
@@ -63,7 +63,7 @@ export default {
     min-height: 100%;
 }
 
-.content {
+.navigation-content {
     flex: 1 0 auto;
 }
 

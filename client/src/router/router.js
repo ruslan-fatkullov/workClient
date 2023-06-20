@@ -28,11 +28,11 @@ const routes = [
     name: 'MainPage',
     component: () => import('../pages/MainPage.vue')
   },
-  {
+  /*{
     path: '/adminPanel',
     name: 'AdminPanel',
     component: () => import('../pages/AdminPanelPage.vue')
-  },
+  },*/
   {
     path: '/techSupport',
     name: 'TechnicalSupportPage',
@@ -42,6 +42,11 @@ const routes = [
     path: '/downloadProjects',
     name: 'DownloadProjectsPage',
     component: () => import('../pages/DownloadProjectsPage.vue')
+  },
+  {
+    path: '/landingPage',
+    name: 'LandingPageVue',
+    component: () => import('../pages/LandingPage.vue')
   },
 ]
 

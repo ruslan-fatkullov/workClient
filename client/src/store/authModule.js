@@ -93,6 +93,33 @@ export default {
                return context.commit("setAuthBool", true)
             }
             return context.commit("setAuthBool", false)
+        },
+        // замена данных аккаунта пользователем
+        async replaceUserData(context, user){
+            await axios.post(config.SERVER_HOST + "/api/replaceData", user , {
+                headers: {
+                    "Content-type": "application/json"
+                }
+            }).then((res) => {
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+                context.commit("setAuthUserInfo", res.data)
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+            })
         }
     },
     mutations: {

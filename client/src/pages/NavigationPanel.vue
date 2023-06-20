@@ -33,12 +33,12 @@
                         </div>
                     </li>
 
-                    <li v-if="isAuth" class="nav-item">
+                    <!--<li v-if="isAuth" class="nav-item">
                         <div class="">
                             <router-link @click="openMenu()" class="nav-link" to="/adminPanel">Панель
                                 администрирования</router-link>
                         </div>
-                    </li>
+                    </li>-->
                     <li v-if="isAuth" class="nav-item">
                         <div class="profile-list">
                             <div class="profile-link">{{ computeFullname }}
@@ -104,7 +104,8 @@ export default {
             if (window.scrollY > navHeight) {
                 this.$refs.top_bar.classList.add("fixed_navigation")
                 this.$emit('setMargin', 1)
-            } else {
+            }
+            if (window.scrollY === 0) {
                 this.$refs.top_bar.classList.remove("fixed_navigation")
                 this.$emit('setMargin', 0)
             }
@@ -153,15 +154,6 @@ export default {
 </script>
 
 <style scoped>
-/*.plug {
-    height: 10vh;
-    display: none;
-}
-
-.plug-visible {
-    display: block;
-}*/
-
 .profile-svg {
     height: 16px;
     width: 16px;
@@ -183,19 +175,33 @@ export default {
 .top_bar {
     background-color: #fff;
     width: 100%;
-    position: relative;
     z-index: 9999;
     height: 10vh;
+    animation: set_opacity .4s linear;
 }
+
+
+@keyframes set_opacity {
+    0% {
+        opacity: .94;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
 
 .fixed_navigation {
     position: fixed;
-    opacity: .96;
+    opacity: .94;
     top: 0;
-    animation: fixed_menu .3s linear;
+    animation: fixed_menu_down .3s linear;
 }
 
-@keyframes fixed_menu {
+
+
+@keyframes fixed_menu_down {
     0% {
         transform: translateY(-100px);
     }
@@ -204,6 +210,7 @@ export default {
         transform: translateY(0px);
     }
 }
+
 
 .site-logo {
     font-family: 'Rostelecom Basic Light', Helvetica, Arial, sans-serif;
@@ -342,6 +349,10 @@ export default {
 
 
 @media only screen and (max-width : 1200px) {
+    .wrapper {
+        z-index: -9999;
+    }
+
 
     .nav-panel {
         display: flex;
@@ -350,18 +361,24 @@ export default {
     }
 
     .top_bar {
+        position: relative;
+        z-index: 9999;
         height: 10vh;
-        z-index: 999;
+    }
+    .fixed_navigation{
+        position: fixed;
     }
 
-    .logo-burger-group{
+    .logo-burger-group {
         position: relative;
     }
+
     .site-logo img {
         height: 100%;
         padding: 4% 0;
     }
-    .site-logo{
+
+    .site-logo {
         height: 10vh;
         position: relative;
     }
@@ -399,7 +416,7 @@ export default {
         bottom: 0;
         left: 0;
         right: 0;
-        z-index: 98;
+        z-index: 1;
         background-color: rgba(0, 0, 0, .7);
     }
 
@@ -482,4 +499,5 @@ export default {
         }
     }
 
-}</style>
+}
+</style>

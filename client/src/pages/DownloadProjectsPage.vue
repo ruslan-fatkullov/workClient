@@ -101,7 +101,10 @@ export default {
       if (response.status === 400) {
         alert("Не удалось найти файл")
       }
+
       this.launcher_downloading = false
+
+
     },
     scrollDown() {
       this.$refs.slider.scrollIntoView({ behavior: 'smooth' });
@@ -198,7 +201,7 @@ export default {
 }
 
 .description_header_text {
-  padding: 5.5rem 0;
+  padding: .5rem 0;
   color: white;
   height: 90vh;
   display: flex;

@@ -37,4 +37,8 @@ router.post("/changePassToEmail", LoginController.ChangePasswordSendToEmail)
 // отправка ссылки на подтверждение пароля
 router.post("/sendLinkToMail", LoginController.EmailConfirmSendMessage)
 
+// замена данных о пользователе
+router.post("/replaceData", SignInController.replaceUserData)
+
+
 module.exports = router;

@@ -65,7 +65,6 @@ export default {
             sendEmailAgain: false,
             loading: false,
             isRequest: false,
-
             isValidPassword: false,
             passwordTips: ""
         };
@@ -83,8 +82,6 @@ export default {
         },
         login() {
             if (this.isLoginMode) {
-
-
                 this.resultString = ""
                 this.loading = true;
                 this.isRequest = true;
@@ -224,7 +221,7 @@ export default {
 
 .form-group {
     margin-bottom: 10px;
-    background-color: #fff;
+    background-color: #f2f2f2;
     position: relative;
     display: flex;
     font-family: 'Rostelecom Basic Light', Helvetica, Arial, sans-serif;
@@ -233,6 +230,7 @@ export default {
 .pass p {
     position: absolute;
     right: 2rem;
+    top: 10%;
     color: red;
     transition: all .2s ease;
     pointer-events: none;
@@ -254,24 +252,25 @@ export default {
 
 .active_label_style label {
     font-size: 95%;
-    bottom: 2.5em;
+    bottom: 2.3em;
     margin-left: 0;
+    background-color: #f2f2f2;
     color: black;
     margin-left: 1rem;
-    padding: 0 .6em;
-    background-color: #fff;
-    outline: 1px solid #075668;
+    padding: 0 .2em;
     border-radius: .5rem;
     color: #075668;
 }
 
 
 .form-control {
+    background-color: #f2f2f2;
     display: block;
     padding: 10px;
     line-height: 1.5;
     color: #333;
     border: none;
+    margin-top: .3rem;
 }
 
 
@@ -315,7 +314,7 @@ export default {
 /* кнопка показать пароль */
 .password-control {
     position: absolute;
-    top: 11px;
+    top: 33%;
     right: 6px;
     display: inline-block;
     width: 20px;
